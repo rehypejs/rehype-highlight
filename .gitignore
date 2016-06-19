@@ -1,0 +1,6 @@
+.DS_Store
+*.log
+coverage/
+node_modules/
+rehype-highlight.js
+rehype-highlight.min.js
