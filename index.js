@@ -2,6 +2,7 @@
 
 var visit = require('unist-util-visit');
 var lowlight = require('lowlight');
+var toString = require('hast-util-to-string');
 
 module.exports = attacher;
 
@@ -47,9 +48,9 @@ function attacher(origin, options) {
     }
 
     if (lang) {
-      result = lowlight.highlight(lang, text(node), options);
+      result = lowlight.highlight(lang, toString(node), options);
     } else {
-      result = lowlight.highlightAuto(text(node), options);
+      result = lowlight.highlightAuto(toString(node), options);
 
       if (result.language) {
         props.className.push('language-' + result.language);
@@ -58,31 +59,6 @@ function attacher(origin, options) {
 
     node.children = result.value;
   }
-}
-
-/* Get the text content of `node`. */
-function text(node) {
-  var children = node.children;
-  var length = children.length;
-  var result = [];
-  var index = -1;
-  var child;
-  var value;
-
-  while (++index < length) {
-    child = children[index];
-    value = '';
-
-    if (child.children) {
-      value = text(child);
-    } else if (child.type === 'text') {
-      value = child.value;
-    }
-
-    result[index] = value;
-  }
-
-  return result.join('');
 }
 
 /* Get the programming language of `node`. */
