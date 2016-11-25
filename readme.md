@@ -1,12 +1,10 @@
 # rehype-highlight [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
 
-<!--lint disable heading-increment list-item-spacing-->
-
 Syntax highlighting for [**rehype**][rehype].
 
 ## Installation
 
-[npm][npm-install]:
+[npm][]:
 
 ```bash
 npm install rehype-highlight
@@ -14,22 +12,18 @@ npm install rehype-highlight
 
 ## Usage
 
-Dependencies:
-
 ```javascript
 var rehype = require('rehype');
 var highlight = require('rehype-highlight');
-```
 
-Transform:
-
-```javascript
 var file = rehype().use(highlight).process([
-    '<h1>Hello World!</h1>',
-    '',
-    '<pre><code class="language-js">var name = "World";',
-    'console.warn("Hello, " + name + "!")</code></pre>'
-].join('\n'));
+  '<h1>Hello World!</h1>',
+  '',
+  '<pre><code class="language-js">var name = "World";',
+  'console.warn("Hello, " + name + "!")</code></pre>'
+].join('\n'), {fragment: true});
+
+console.log(String(file));
 ```
 
 Yields:
@@ -43,7 +37,7 @@ Yields:
 
 ## API
 
-### `rehype.use(highlight[, options])`
+### `rehype().use(highlight[, options])`
 
 Syntax highlight `pre > code`.  Uses [**lowlight**][lowlight] under
 the hood, which is a virtual version of [`highlight.js`][highlight-js].
@@ -74,7 +68,7 @@ Will auto-detect the syntax language otherwise.
 
 [codecov]: https://codecov.io/github/wooorm/rehype-highlight
 
-[npm-install]: https://docs.npmjs.com/cli/install
+[npm]: https://docs.npmjs.com/cli/install
 
 [license]: LICENSE
 
