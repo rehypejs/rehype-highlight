@@ -54,7 +54,7 @@ Will auto-detect the syntax language otherwise.
 
 ###### `options`
 
-*   `prefix` (`string`, default: 'hljs-')
+*   `prefix` (`string`, default: `'hljs-'`)
     — Prefix to use before classes;
 *   `subset` (`boolean` or `Array.<string>`, default: all languages)
     — Scope of languages to check when auto-detecting.
