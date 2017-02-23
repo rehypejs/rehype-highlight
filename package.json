@@ -28,9 +28,9 @@
     "browserify": "^14.1.0",
     "esmangle": "^1.0.1",
     "nyc": "^10.0.0",
-    "rehype": "^3.0.0",
-    "remark-cli": "^2.1.0",
-    "remark-preset-wooorm": "^1.0.0",
+    "rehype": "^4.0.0",
+    "remark-cli": "^3.0.0",
+    "remark-preset-wooorm": "^2.0.0",
     "tape": "^4.0.0",
     "unist-util-inspect": "^4.0.0",
     "xo": "^0.17.1"
@@ -58,6 +58,6 @@
     ]
   },
   "remarkConfig": {
-    "presets": "wooorm"
+    "plugins": ["preset-wooorm"]
   }
 }

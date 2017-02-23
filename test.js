@@ -6,11 +6,15 @@ var highlight = require('./index.js');
 
 test('highlight()', function (t) {
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code></code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code></code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -20,11 +24,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code>"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -34,11 +42,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight, {subset: ['applescript']}).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code>"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {subset: ['applescript']})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -48,11 +60,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight, {subset: false}).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code>"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {subset: false})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -62,11 +78,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight, {prefix: 'foo'}).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code>"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {prefix: 'foo'})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -76,11 +96,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight, {prefix: 'foo-'}).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code>"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {prefix: 'foo-'})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -90,12 +114,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="lang-js">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="lang-js">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -106,12 +134,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="language-js">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="language-js">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -122,12 +154,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="language-javascript">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="language-javascript">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -138,12 +174,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="no-highlight">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="no-highlight">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -154,12 +194,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="nohighlight">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="nohighlight">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -170,12 +214,16 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
@@ -186,11 +234,15 @@ test('highlight()', function (t) {
   );
 
   t.equal(
-    rehype().use(highlight).process([
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code><!--TODO-->"use strict";</code></pre>'
-    ].join('\n'), {fragment: true}).toString(),
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code><!--TODO-->"use strict";</code></pre>'
+      ].join('\n'))
+      .toString(),
     [
       '<h1>Hello World!</h1>',
       '',

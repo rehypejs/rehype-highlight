@@ -16,12 +16,15 @@ npm install rehype-highlight
 var rehype = require('rehype');
 var highlight = require('rehype-highlight');
 
-var file = rehype().use(highlight).process([
-  '<h1>Hello World!</h1>',
-  '',
-  '<pre><code class="language-js">var name = "World";',
-  'console.warn("Hello, " + name + "!")</code></pre>'
-].join('\n'), {fragment: true});
+var file = rehype()
+  .data('settings', {fragment: true})
+  .use(highlight)
+  .processSync([
+    '<h1>Hello World!</h1>',
+    '',
+    '<pre><code class="language-js">var name = "World";',
+    'console.warn("Hello, " + name + "!")</code></pre>'
+  ].join('\n'));
 
 console.log(String(file));
 ```

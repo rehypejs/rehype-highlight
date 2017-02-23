@@ -6,7 +6,7 @@ var toString = require('hast-util-to-string');
 
 module.exports = attacher;
 
-function attacher(origin, options) {
+function attacher(options) {
   var settings = options || {};
   var detect = settings.subset !== false;
   var prefix = settings.prefix;
