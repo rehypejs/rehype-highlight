@@ -49,13 +49,17 @@ Configure the language by using a `lang-js` or `language-js` class.
 Ignore `code` with a `no-highlight` or `nohighlight` class.
 Will auto-detect the syntax language otherwise.
 
-###### `options`
+##### `options`
 
-*   `prefix` (`string`, default: `'hljs-'`)
-    — Prefix to use before classes;
-*   `subset` (`boolean` or `Array.<string>`, default: all languages)
-    — Scope of languages to check when auto-detecting.
-    Pass `false` to not highlight code without language classes.
+###### `options.prefix`
+
+`string`, default: `'hljs-'` — Prefix to use before classes.
+
+###### `options.subset`
+
+`boolean` or `Array.<string>`, default: all languages — Scope of languages to
+check when auto-detecting.  Pass `false` to not highlight code without
+language classes.
 
 ## License
 
