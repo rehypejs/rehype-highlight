@@ -12,30 +12,40 @@ npm install rehype-highlight
 
 ## Usage
 
-```javascript
-var rehype = require('rehype');
-var highlight = require('rehype-highlight');
-
-var file = rehype()
-  .data('settings', {fragment: true})
-  .use(highlight)
-  .processSync([
-    '<h1>Hello World!</h1>',
-    '',
-    '<pre><code class="language-js">var name = "World";',
-    'console.warn("Hello, " + name + "!")</code></pre>'
-  ].join('\n'));
-
-console.log(String(file));
-```
-
-Yields:
+Say `example.html` looks as follows:
 
 ```html
 <h1>Hello World!</h1>
 
-<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x22;World&#x22;</span>;
-<span class="hljs-built_in">console</span>.warn(<span class="hljs-string">&#x22;Hello, &#x22;</span> + name + <span class="hljs-string">&#x22;!&#x22;</span>)</code></pre>
+<pre><code class="language-js">var name = "World";
+console.warn("Hello, " + name + "!")</code></pre>
+```
+
+...and `example.js` like this:
+
+```javascript
+var vfile = require('to-vfile');
+var report = require('vfile-reporter');
+var rehype = require('rehype');
+var highlight = require('rehype-highlight');
+
+rehype()
+  .data('settings', {fragment: true})
+  .use(highlight)
+  .process(vfile.readSync('example.html'), function (err, file) {
+    console.error(report(err || file));
+    console.log(String(file));
+  });
+```
+
+Now, running `node example` yields:
+
+```html
+example.html: no issues found
+<h1>Hello World!</h1>
+
+<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;
+<span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>
 ```
 
 ## API
