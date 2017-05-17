@@ -32,7 +32,6 @@
     "remark-cli": "^3.0.0",
     "remark-preset-wooorm": "^2.0.0",
     "tape": "^4.0.0",
-    "unist-util-inspect": "^4.0.0",
     "xo": "^0.18.0"
   },
   "scripts": {
