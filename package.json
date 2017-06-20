@@ -27,10 +27,10 @@
   "devDependencies": {
     "browserify": "^14.1.0",
     "esmangle": "^1.0.1",
-    "nyc": "^10.0.0",
-    "rehype": "^4.0.0",
+    "nyc": "^11.0.0",
+    "rehype": "^5.0.0",
     "remark-cli": "^3.0.0",
-    "remark-preset-wooorm": "^2.0.0",
+    "remark-preset-wooorm": "^3.0.0",
     "tape": "^4.0.0",
     "xo": "^0.18.0"
   },
@@ -58,6 +58,8 @@
     ]
   },
   "remarkConfig": {
-    "plugins": ["preset-wooorm"]
+    "plugins": [
+      "preset-wooorm"
+    ]
   }
 }
