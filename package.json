@@ -7,7 +7,7 @@
     "rehype",
     "hast",
     "syntax",
-    "highligh",
+    "highlight",
     "highlighting"
   ],
   "repository": "https://github.com/wooorm/rehype-highlight",
