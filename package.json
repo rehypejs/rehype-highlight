@@ -10,8 +10,8 @@
     "highlight",
     "highlighting"
   ],
-  "repository": "https://github.com/wooorm/rehype-highlight",
-  "bugs": "https://github.com/wooorm/rehype-highlight/issues",
+  "repository": "rehypejs/rehype-highlight",
+  "bugs": "https://github.com/rehypejs/rehype-highlight/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"

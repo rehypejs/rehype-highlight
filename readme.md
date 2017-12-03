@@ -77,13 +77,13 @@ language classes.
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/wooorm/rehype-highlight.svg
+[travis-badge]: https://img.shields.io/travis/rehypejs/rehype-highlight.svg
 
-[travis]: https://travis-ci.org/wooorm/rehype-highlight
+[travis]: https://travis-ci.org/rehypejs/rehype-highlight
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/wooorm/rehype-highlight.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/rehypejs/rehype-highlight.svg
 
-[codecov]: https://codecov.io/github/wooorm/rehype-highlight
+[codecov]: https://codecov.io/github/rehypejs/rehype-highlight
 
 [npm]: https://docs.npmjs.com/cli/install
 
@@ -91,7 +91,7 @@ language classes.
 
 [author]: http://wooorm.com
 
-[rehype]: https://github.com/wooorm/rehype
+[rehype]: https://github.com/rehypejs/rehype
 
 [lowlight]: https://github.com/wooorm/lowlight
 
