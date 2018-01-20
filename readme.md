@@ -71,6 +71,16 @@ Will auto-detect the syntax language otherwise.
 check when auto-detecting.  Pass `false` to not highlight code without
 language classes.
 
+###### `options.ignoreMissing`
+
+`boolean`, default: `false`.  Pass `true` to not highlight code with
+unrecognized language classes.
+
+###### `options.plainText`
+
+`Array.<string>`, default: `[]`.  Pass any language class you would like
+to be kept as plain-text instead of getting highlighted.
+
 ## Contribute
 
 See [`contribute.md` in `rehypejs/rehype`][contribute] for ways to get started.
