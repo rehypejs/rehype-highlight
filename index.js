@@ -10,6 +10,8 @@ function attacher(options) {
   var settings = options || {};
   var detect = settings.subset !== false;
   var prefix = settings.prefix;
+  var ignoreMissing = settings.ignoreMissing;
+  var plainText = settings.plainText || [];
   var name = 'hljs';
   var pos;
 
@@ -35,7 +37,7 @@ function attacher(options) {
 
     lang = language(node);
 
-    if (lang === false || (!lang && !detect)) {
+    if (lang === false || (!lang && !detect) || plainText.indexOf(lang) !== -1) {
       return;
     }
 
@@ -47,14 +49,22 @@ function attacher(options) {
       props.className.unshift(name);
     }
 
-    if (lang) {
-      result = lowlight.highlight(lang, toString(node), options);
-    } else {
-      result = lowlight.highlightAuto(toString(node), options);
-
-      if (result.language) {
-        props.className.push('language-' + result.language);
+    try {
+      if (lang) {
+        result = lowlight.highlight(lang, toString(node), options);
+      } else {
+        result = lowlight.highlightAuto(toString(node), options);
       }
+    } catch (err) {
+      if (err && ignoreMissing && /Unknown language/.test(err.message)) {
+        return;
+      }
+
+      throw err;
+    }
+
+    if (!lang && result.language) {
+      props.className.push('language-' + result.language);
     }
 
     node.children = result.value;
