@@ -213,6 +213,63 @@ test('highlight()', function (t) {
     'should not highlight (`nohighlight`)'
   );
 
+  t.throws(
+    function () {
+      rehype()
+        .data('settings', {fragment: true})
+        .use(highlight)
+        .processSync([
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code class="lang-foobar">var name = "World";',
+          'console.log("Hello, " + name + "!")</code></pre>'
+        ].join('\n'))
+        .toString();
+    },
+    'Unknown language: `foobar` is not registered',
+    'should throw on missing languages'
+  );
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {ignoreMissing: true})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="lang-foobar">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs lang-foobar">var name = "World";',
+      'console.log("Hello, " + name + "!")</code></pre>'
+    ].join('\n'),
+    'should ignore missing languages'
+  );
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {plainText: ['js']})
+      .processSync([
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="lang-js">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n'))
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="lang-js">var name = "World";',
+      'console.log("Hello, " + name + "!")</code></pre>'
+    ].join('\n'),
+    'should not highlight plainText-ed languages'
+  );
+
   t.equal(
     rehype()
       .data('settings', {fragment: true})
