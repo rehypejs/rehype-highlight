@@ -24,18 +24,18 @@ console.warn("Hello, " + name + "!")</code></pre>
 ...and `example.js` like this:
 
 ```javascript
-var vfile = require('to-vfile');
-var report = require('vfile-reporter');
-var rehype = require('rehype');
-var highlight = require('rehype-highlight');
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var rehype = require('rehype')
+var highlight = require('rehype-highlight')
 
 rehype()
   .data('settings', {fragment: true})
   .use(highlight)
-  .process(vfile.readSync('example.html'), function (err, file) {
-    console.error(report(err || file));
-    console.log(String(file));
-  });
+  .process(vfile.readSync('example.html'), function(err, file) {
+    console.error(report(err || file))
+    console.log(String(file))
+  })
 ```
 
 Now, running `node example` yields:

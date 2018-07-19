@@ -1,98 +1,102 @@
-'use strict';
+'use strict'
 
-var visit = require('unist-util-visit');
-var lowlight = require('lowlight');
-var toString = require('hast-util-to-string');
+var visit = require('unist-util-visit')
+var lowlight = require('lowlight')
+var toString = require('hast-util-to-string')
 
-module.exports = attacher;
+module.exports = attacher
 
 function attacher(options) {
-  var settings = options || {};
-  var detect = settings.subset !== false;
-  var prefix = settings.prefix;
-  var ignoreMissing = settings.ignoreMissing;
-  var plainText = settings.plainText || [];
-  var name = 'hljs';
-  var pos;
+  var settings = options || {}
+  var detect = settings.subset !== false
+  var prefix = settings.prefix
+  var ignoreMissing = settings.ignoreMissing
+  var plainText = settings.plainText || []
+  var name = 'hljs'
+  var pos
 
   if (prefix) {
-    pos = prefix.indexOf('-');
-    name = pos === -1 ? prefix : prefix.slice(0, pos);
+    pos = prefix.indexOf('-')
+    name = pos === -1 ? prefix : prefix.slice(0, pos)
   }
 
-  return transformer;
+  return transformer
 
   function transformer(tree) {
-    visit(tree, 'element', visitor);
+    visit(tree, 'element', visitor)
   }
 
   function visitor(node, index, parent) {
-    var props = node.properties;
-    var result;
-    var lang;
+    var props = node.properties
+    var result
+    var lang
 
     if (!parent || parent.tagName !== 'pre' || node.tagName !== 'code') {
-      return;
+      return
     }
 
-    lang = language(node);
+    lang = language(node)
 
-    if (lang === false || (!lang && !detect) || plainText.indexOf(lang) !== -1) {
-      return;
+    if (
+      lang === false ||
+      (!lang && !detect) ||
+      plainText.indexOf(lang) !== -1
+    ) {
+      return
     }
 
     if (!props.className) {
-      props.className = [];
+      props.className = []
     }
 
     if (props.className.indexOf(name) === -1) {
-      props.className.unshift(name);
+      props.className.unshift(name)
     }
 
     try {
       if (lang) {
-        result = lowlight.highlight(lang, toString(node), options);
+        result = lowlight.highlight(lang, toString(node), options)
       } else {
-        result = lowlight.highlightAuto(toString(node), options);
+        result = lowlight.highlightAuto(toString(node), options)
       }
     } catch (err) {
       if (err && ignoreMissing && /Unknown language/.test(err.message)) {
-        return;
+        return
       }
 
-      throw err;
+      throw err
     }
 
     if (!lang && result.language) {
-      props.className.push('language-' + result.language);
+      props.className.push('language-' + result.language)
     }
 
-    node.children = result.value;
+    node.children = result.value
   }
 }
 
 /* Get the programming language of `node`. */
 function language(node) {
-  var className = node.properties.className || [];
-  var length = className.length;
-  var index = -1;
-  var value;
+  var className = node.properties.className || []
+  var length = className.length
+  var index = -1
+  var value
 
   while (++index < length) {
-    value = className[index];
+    value = className[index]
 
     if (value === 'no-highlight' || value === 'nohighlight') {
-      return false;
+      return false
     }
 
     if (value.slice(0, 5) === 'lang-') {
-      return value.slice(5);
+      return value.slice(5)
     }
 
     if (value.slice(0, 9) === 'language-') {
-      return value.slice(9);
+      return value.slice(9)
     }
   }
 
-  return null;
+  return null
 }
