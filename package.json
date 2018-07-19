@@ -25,14 +25,14 @@
     "unist-util-visit": "^1.1.0"
   },
   "devDependencies": {
-    "browserify": "^15.0.0",
+    "browserify": "^16.0.0",
     "esmangle": "^1.0.1",
-    "nyc": "^11.0.0",
-    "rehype": "^5.0.0",
+    "nyc": "^12.0.0",
+    "rehype": "6.0.0",
     "remark-cli": "^5.0.0",
     "remark-preset-wooorm": "^4.0.0",
     "tape": "^4.0.0",
-    "xo": "^0.18.0"
+    "xo": "^0.21.0"
   },
   "scripts": {
     "build-md": "remark . -qfo",

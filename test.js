@@ -2,7 +2,7 @@
 
 var test = require('tape');
 var rehype = require('rehype');
-var highlight = require('./index.js');
+var highlight = require('.');
 
 test('highlight()', function (t) {
   t.equal(
