@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "hast-util-to-string": "^1.0.0",
-    "lowlight": "^1.2.0",
+    "lowlight": "^1.10.0",
     "unist-util-visit": "^1.1.0"
   },
   "devDependencies": {
@@ -33,7 +33,8 @@
     "remark-preset-wooorm": "^4.0.0",
     "tape": "^4.0.0",
     "tinyify": "^2.4.3",
-    "xo": "^0.21.0"
+    "xo": "^0.21.0",
+    "highlight.js": "~9.12.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write '**/*.js' && xo --fix",

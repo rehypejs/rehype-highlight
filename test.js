@@ -315,21 +315,44 @@ test('highlight()', function(t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
+      .use(highlight, {
+        aliases: {tex: ['latex']}
+      })
+      .processSync(
+        [
+          '<pre><code class="lang-latex">\\begin{document}',
+          '\\end{document}</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<pre><code class="hljs lang-latex"><span class="hljs-tag">',
+      '\\<span class="hljs-name">begin</span><span class="hljs-string">{document}</span>',
+      '</span>\n<span class="hljs-tag">\\<span class="hljs-name">end</span>',
+      '<span class="hljs-string">{document}</span></span></code></pre>'
+    ].join(''),
+    'should parse custom language'
+  )
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
       .use(highlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
           '',
-          '<pre><code><!--TODO-->"use strict";</code></pre>'
+          '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+          '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
         ].join('\n')
       )
       .toString(),
     [
       '<h1>Hello World!</h1>',
       '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
+      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
-    'should ignore comments'
+    'should reprocess exact'
   )
 
   t.end()
