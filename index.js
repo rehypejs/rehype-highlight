@@ -12,8 +12,13 @@ function attacher(options) {
   var prefix = settings.prefix
   var ignoreMissing = settings.ignoreMissing
   var plainText = settings.plainText || []
+  var aliases = settings.aliases
   var name = 'hljs'
   var pos
+
+  if (aliases) {
+    lowlight.registerAlias(aliases)
+  }
 
   if (prefix) {
     pos = prefix.indexOf('-')

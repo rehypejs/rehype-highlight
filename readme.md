@@ -82,6 +82,12 @@ with unknown code languages.
 `Array.<string>`, default: `[]`.  Pass any languages you would like to be kept
 as plain-text instead of getting highlighted.
 
+###### `options.aliases`
+
+`Object<string | Array.<string>>`, default: `{}`.
+Register more aliases.
+Passed to [`lowlight.registerAlias`][register-alias].
+
 ## Contribute
 
 See [`contributing.md` in `rehypejs/rehype`][contribute] for ways to get
@@ -113,6 +119,8 @@ repository, organisation, or community you agree to abide by its terms.
 [rehype]: https://github.com/rehypejs/rehype
 
 [lowlight]: https://github.com/wooorm/lowlight
+
+[register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
 
 [highlight-js]: https://github.com/isagalaev/highlight.js
 
