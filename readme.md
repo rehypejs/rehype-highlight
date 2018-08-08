@@ -82,6 +82,13 @@ with unknown code languages.
 `Array.<string>`, default: `[]`.  Pass any languages you would like to be kept
 as plain-text instead of getting highlighted.
 
+###### `options.aliases`
+
+`Map.<string, string | Array.<string>>`, default: `{}`. 
+Add your custom languages or aliases for example
+`{extraLanguages: {tex: 'latex'}}` or
+`{extraLanguages: {tex: ['latex', 'lualatex']}}`.
+
 ## Contribute
 
 See [`contributing.md` in `rehypejs/rehype`][contribute] for ways to get
