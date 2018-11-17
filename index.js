@@ -80,7 +80,7 @@ function attacher(options) {
   }
 }
 
-/* Get the programming language of `node`. */
+// Get the programming language of `node`.
 function language(node) {
   var className = node.properties.className || []
   var length = className.length

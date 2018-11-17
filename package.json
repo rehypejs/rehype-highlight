@@ -37,8 +37,8 @@
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write '**/*.js' && xo --fix",
-    "build-bundle": "browserify index.js -s rehypeHighlight > rehype-highlight.js",
-    "build-mangle": "browserify index.js -s rehypeHighlight -p tinyify > rehype-highlight.min.js",
+    "build-bundle": "browserify . -s rehypeHighlight > rehype-highlight.js",
+    "build-mangle": "browserify . -s rehypeHighlight -p tinyify > rehype-highlight.min.js",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
