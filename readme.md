@@ -114,7 +114,7 @@ repository, organisation, or community you agree to abide by its terms.
 
 [license]: license
 
-[author]: http://wooorm.com
+[author]: https://wooorm.com
 
 [rehype]: https://github.com/rehypejs/rehype
 
