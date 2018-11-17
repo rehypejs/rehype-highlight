@@ -64,12 +64,12 @@ function attacher(options) {
       } else {
         result = lowlight.highlightAuto(toString(node), options)
       }
-    } catch (err) {
-      if (err && ignoreMissing && /Unknown language/.test(err.message)) {
+    } catch (error) {
+      if (error && ignoreMissing && /Unknown language/.test(error.message)) {
         return
       }
 
-      throw err
+      throw error
     }
 
     if (!lang && result.language) {
