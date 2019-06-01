@@ -3,19 +3,23 @@
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
+[![Size][size-badge]][size]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-Syntax highlighting for [**rehype**][rehype].
+[**rehype**][rehype] plugin to highlight the syntax of code with
+[**lowlight**][lowlight] ([`highlight.js`][highlight-js]).
 
-## Installation
+## Install
 
 [npm][]:
 
-```bash
+```sh
 npm install rehype-highlight
 ```
 
-## Usage
+## Use
 
 Say `example.html` looks as follows:
 
@@ -26,9 +30,9 @@ Say `example.html` looks as follows:
 console.warn("Hello, " + name + "!")</code></pre>
 ```
 
-...and `example.js` like this:
+…and `example.js` like this:
 
-```javascript
+```js
 var vfile = require('to-vfile')
 var report = require('vfile-reporter')
 var rehype = require('rehype')
@@ -57,8 +61,9 @@ example.html: no issues found
 
 ### `rehype().use(highlight[, options])`
 
-Syntax highlight `pre > code`.  Uses [**lowlight**][lowlight] under
-the hood, which is a virtual version of [`highlight.js`][highlight-js].
+Syntax highlight `pre > code`.
+Uses [**lowlight**][lowlight] under the hood, which is a virtual version of
+[`highlight.js`][highlight-js].
 
 Configure the language by using a `lang-js` or `language-js` class.
 Ignore `code` with a `no-highlight` or `nohighlight` class.
@@ -68,38 +73,41 @@ Will auto-detect the syntax language otherwise.
 
 ###### `options.prefix`
 
-`string`, default: `'hljs-'` — Prefix to use before classes.
+Prefix to use before classes (`string`, default: `'hljs-'`).
 
 ###### `options.subset`
 
-`boolean` or `Array.<string>`, default: all languages — Scope of languages to
-check when auto-detecting.  Pass `false` to not highlight code without
-language classes.
+Scope of languages to check when auto-detecting (`boolean` or `Array.<string>`,
+default: all languages).
+Pass `false` to not highlight code without language classes.
 
 ###### `options.ignoreMissing`
 
-`boolean`, default: `false`.  By default, unregistered syntaxes throw an error
-when they are used.  Pass `true` to swallow those errors and thus ignore code
-with unknown code languages.
+Swallow errors for missing languages (`boolean`, default: `false`).
+By default, unregistered syntaxes throw an error when they are used.
+Pass `true` to swallow those errors and thus ignore code with unknown code
+languages.
 
 ###### `options.plainText`
 
-`Array.<string>`, default: `[]`.  Pass any languages you would like to be kept
-as plain-text instead of getting highlighted.
+List of plain-text languages (`Array.<string>`, default: `[]`).
+Pass any languages you would like to be kept as plain-text instead of getting
+highlighted.
 
 ###### `options.aliases`
 
-`Object<string | Array.<string>>`, default: `{}`.
-Register more aliases.
+Register more aliases (`Object<string | Array.<string>>`, default: `{}`).
 Passed to [`lowlight.registerAlias`][register-alias].
 
 ## Contribute
 
-See [`contributing.md` in `rehypejs/rehype`][contribute] for ways to get
-started.
+See [`contributing.md`][contributing] in [`rehypejs/.github`][health] for ways
+to get started.
+See [`support.md`][support] for ways to get help.
 
-This organisation has a [Code of Conduct][coc].  By interacting with this
-repository, organisation, or community you agree to abide by its terms.
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
 ## License
 
@@ -119,11 +127,29 @@ repository, organisation, or community you agree to abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/rehype-highlight
 
+[size-badge]: https://img.shields.io/bundlephobia/minzip/rehype-highlight.svg
+
+[size]: https://bundlephobia.com/result?p=rehype-highlight
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[collective]: https://opencollective.com/unified
+
 [chat-badge]: https://img.shields.io/badge/join%20the%20community-on%20spectrum-7b16ff.svg
 
 [chat]: https://spectrum.chat/unified/rehype
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[health]: https://github.com/rehypejs/.github
+
+[contributing]: https://github.com/rehypejs/.github/blob/master/contributing.md
+
+[support]: https://github.com/rehypejs/.github/blob/master/support.md
+
+[coc]: https://github.com/rehypejs/.github/blob/master/code-of-conduct.md
 
 [license]: license
 
@@ -136,7 +162,3 @@ repository, organisation, or community you agree to abide by its terms.
 [register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
 
 [highlight-js]: https://github.com/isagalaev/highlight.js
-
-[contribute]: https://github.com/rehypejs/rehype/blob/master/contributing.md
-
-[coc]: https://github.com/rehypejs/rehype/blob/master/code-of-conduct.md
