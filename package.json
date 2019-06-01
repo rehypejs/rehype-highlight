@@ -1,9 +1,10 @@
 {
   "name": "rehype-highlight",
   "version": "2.2.1",
-  "description": "Highlight code blocks",
+  "description": "rehype plugin to highlight code blocks with lowlight (highlight.js)",
   "license": "MIT",
   "keywords": [
+    "unified",
     "rehype",
     "hast",
     "syntax",
