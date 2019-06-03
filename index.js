@@ -2,7 +2,7 @@
 
 var visit = require('unist-util-visit')
 var lowlight = require('lowlight')
-var toString = require('hast-util-to-string')
+var toText = require('hast-util-to-text')
 
 module.exports = attacher
 
@@ -60,9 +60,9 @@ function attacher(options) {
 
     try {
       if (lang) {
-        result = lowlight.highlight(lang, toString(node), options)
+        result = lowlight.highlight(lang, toText(parent), options)
       } else {
-        result = lowlight.highlightAuto(toString(node), options)
+        result = lowlight.highlightAuto(toText(parent), options)
       }
     } catch (error) {
       if (error && ignoreMissing && /Unknown language/.test(error.message)) {

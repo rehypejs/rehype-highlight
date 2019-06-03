@@ -376,5 +376,26 @@ test('highlight()', function(t) {
     'should ignore comments'
   )
 
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight)
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";<br>console.log("very strict")</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;',
+      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"very strict"</span>)</code></pre>'
+    ].join('\n'),
+    'should support `<br>` elements'
+  )
+
   t.end()
 })
