@@ -99,6 +99,12 @@ highlighted.
 Register more aliases (`Object<string | Array.<string>>`, default: `{}`).
 Passed to [`lowlight.registerAlias`][register-alias].
 
+## Security
+
+Use of `rehype-highlight` *should* be safe to use as `lowlight` *should* be safe
+to use.
+When in doubt, use [`rehype-sanitize`][sanitize].
+
 ## Contribute
 
 See [`contributing.md`][contributing] in [`rehypejs/.github`][health] for ways
@@ -162,3 +168,5 @@ abide by its terms.
 [register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
 
 [highlight-js]: https://github.com/isagalaev/highlight.js
+
+[sanitize]: https://github.com/rehypejs/rehype-sanitize
