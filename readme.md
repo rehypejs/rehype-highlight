@@ -99,6 +99,11 @@ highlighted.
 Register more aliases (`Object<string | Array.<string>>`, default: `{}`).
 Passed to [`lowlight.registerAlias`][register-alias].
 
+###### `options.languages`
+
+Register more languages (`Object<string | function>`, default: `{}`).
+Each key/value pair passed as arguments to [`lowlight.registerLanguage`][register-language].
+
 ## Security
 
 Use of `rehype-highlight` *should* be safe to use as `lowlight` *should* be safe
@@ -166,6 +171,8 @@ abide by its terms.
 [lowlight]: https://github.com/wooorm/lowlight
 
 [register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
+
+[register-language]: https://github.com/wooorm/lowlight#lowregisterlanguagename-syntax
 
 [highlight-js]: https://github.com/isagalaev/highlight.js
 

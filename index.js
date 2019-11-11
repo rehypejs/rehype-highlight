@@ -13,11 +13,19 @@ function attacher(options) {
   var ignoreMissing = settings.ignoreMissing
   var plainText = settings.plainText || []
   var aliases = settings.aliases
+  var languages = settings.languages
   var name = 'hljs'
   var pos
 
   if (aliases) {
     lowlight.registerAlias(aliases)
+  }
+
+  if (languages) {
+    // eslint-disable-next-line guard-for-in
+    for (let name in languages) {
+      lowlight.registerLanguage(name, languages[name])
+    }
   }
 
   if (prefix) {
