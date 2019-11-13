@@ -30,11 +30,11 @@
     "nyc": "^14.0.0",
     "prettier": "^1.0.0",
     "rehype": "9.0.0",
-    "remark-cli": "^6.0.0",
-    "remark-preset-wooorm": "^5.0.0",
+    "remark-cli": "^7.0.0",
+    "remark-preset-wooorm": "^6.0.0",
     "tape": "^4.0.0",
     "tinyify": "^2.0.0",
-    "xo": "^0.24.0"
+    "xo": "^0.25.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
@@ -64,7 +64,10 @@
     "esnext": false,
     "ignores": [
       "rehype-highlight.js"
-    ]
+    ],
+    "rules": {
+      "unicorn/prefer-includes": "off"
+    }
   },
   "remarkConfig": {
     "plugins": [
