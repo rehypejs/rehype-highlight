@@ -397,5 +397,34 @@ test('highlight()', function(t) {
     'should support `<br>` elements'
   )
 
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {
+        languages: {
+          test: function() {
+            return {
+              aliases: ['test'],
+              keywords: {keyword: 'test'}
+            }
+          }
+        }
+      })
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>test normal text</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs language-subunit"><span class="hljs-keyword">test </span>normal text</code></pre>'
+    ].join('\n'),
+    'should register languages'
+  )
+
   t.end()
 })
