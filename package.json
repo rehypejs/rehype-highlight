@@ -30,7 +30,7 @@
   "dependencies": {
     "hast-util-to-text": "^2.0.0",
     "lowlight": "^1.10.0",
-    "unist-util-visit": "^1.1.0"
+    "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {
     "browserify": "^16.0.0",
