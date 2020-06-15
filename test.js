@@ -4,7 +4,7 @@ var test = require('tape')
 var rehype = require('rehype')
 var highlight = require('.')
 
-test('highlight()', function(t) {
+test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
@@ -228,7 +228,7 @@ test('highlight()', function(t) {
   )
 
   t.throws(
-    function() {
+    function () {
       rehype()
         .data('settings', {fragment: true})
         .use(highlight)
@@ -402,7 +402,7 @@ test('highlight()', function(t) {
       .data('settings', {fragment: true})
       .use(highlight, {
         languages: {
-          test: function() {
+          test: function () {
             return {
               aliases: ['test'],
               keywords: {keyword: 'test'}
