@@ -1,3 +1,5 @@
 coverage/
 rehype-highlight.js
 rehype-highlight.min.js
+*.json
+*.md
