@@ -1,36 +1,30 @@
 'use strict'
 
-var visit = require('unist-util-visit')
-var lowlight = require('lowlight')
 var toText = require('hast-util-to-text')
+var lowlight = require('lowlight')
+var visit = require('unist-util-visit')
 
 module.exports = attacher
 
 function attacher(options) {
   var settings = options || {}
-  var detect = settings.subset !== false
-  var prefix = settings.prefix
-  var ignoreMissing = settings.ignoreMissing
-  var plainText = settings.plainText || []
-  var aliases = settings.aliases
-  var languages = settings.languages
   var name = 'hljs'
   var pos
 
-  if (aliases) {
-    lowlight.registerAlias(aliases)
+  if (settings.aliases) {
+    lowlight.registerAlias(settings.aliases)
   }
 
-  if (languages) {
+  if (settings.languages) {
     // eslint-disable-next-line guard-for-in
-    for (let name in languages) {
-      lowlight.registerLanguage(name, languages[name])
+    for (let name in settings.languages) {
+      lowlight.registerLanguage(name, settings.languages[name])
     }
   }
 
-  if (prefix) {
-    pos = prefix.indexOf('-')
-    name = pos === -1 ? prefix : prefix.slice(0, pos)
+  if (settings.prefix) {
+    pos = settings.prefix.indexOf('-')
+    name = pos > -1 ? settings.prefix.slice(0, pos) : settings.prefix
   }
 
   return transformer
@@ -40,7 +34,7 @@ function attacher(options) {
   }
 
   function visitor(node, index, parent) {
-    var props = node.properties
+    var props
     var result
     var lang
 
@@ -52,17 +46,19 @@ function attacher(options) {
 
     if (
       lang === false ||
-      (!lang && !detect) ||
-      plainText.indexOf(lang) !== -1
+      (!lang && settings.subset === false) ||
+      (settings.plainText && settings.plainText.indexOf(lang) > -1)
     ) {
       return
     }
+
+    props = node.properties
 
     if (!props.className) {
       props.className = []
     }
 
-    if (props.className.indexOf(name) === -1) {
+    if (props.className.indexOf(name) < 0) {
       props.className.unshift(name)
     }
 
@@ -71,7 +67,11 @@ function attacher(options) {
         ? lowlight.highlight(lang, toText(parent), options)
         : lowlight.highlightAuto(toText(parent), options)
     } catch (error) {
-      if (error && ignoreMissing && /Unknown language/.test(error.message)) {
+      if (
+        error &&
+        settings.ignoreMissing &&
+        /Unknown language/.test(error.message)
+      ) {
         return
       }
 
@@ -89,11 +89,10 @@ function attacher(options) {
 // Get the programming language of `node`.
 function language(node) {
   var className = node.properties.className || []
-  var length = className.length
   var index = -1
   var value
 
-  while (++index < length) {
+  while (++index < className.length) {
     value = className[index]
 
     if (value === 'no-highlight' || value === 'nohighlight') {
@@ -108,6 +107,4 @@ function language(node) {
       return value.slice(9)
     }
   }
-
-  return null
 }
