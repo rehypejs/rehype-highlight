@@ -127,9 +127,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/rehypejs/rehype-highlight.svg
+[build-badge]: https://github.com/rehypejs/rehype-highlight/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/rehypejs/rehype-highlight
+[build]: https://github.com/rehypejs/rehype-highlight/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/rehypejs/rehype-highlight.svg
 
