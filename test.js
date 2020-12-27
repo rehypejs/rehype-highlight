@@ -326,11 +326,9 @@ test('highlight()', function (t) {
       )
       .toString(),
     [
-      '<pre><code class="hljs lang-latex"><span class="hljs-tag">',
-      '\\<span class="hljs-name">begin</span><span class="hljs-string">{document}</span>',
-      '</span>\n<span class="hljs-tag">\\<span class="hljs-name">end</span>',
-      '<span class="hljs-string">{document}</span></span></code></pre>'
-    ].join(''),
+      '<pre><code class="hljs lang-latex"><span class="hljs-keyword">\\begin</span>{document}',
+      '<span class="hljs-keyword">\\end</span>{document}</code></pre>'
+    ].join('\n'),
     'should parse custom language'
   )
 

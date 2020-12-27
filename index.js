@@ -67,11 +67,9 @@ function attacher(options) {
     }
 
     try {
-      if (lang) {
-        result = lowlight.highlight(lang, toText(parent), options)
-      } else {
-        result = lowlight.highlightAuto(toText(parent), options)
-      }
+      result = lang
+        ? lowlight.highlight(lang, toText(parent), options)
+        : lowlight.highlightAuto(toText(parent), options)
     } catch (error) {
       if (error && ignoreMissing && /Unknown language/.test(error.message)) {
         return
