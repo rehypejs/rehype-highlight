@@ -2,4 +2,4 @@
 var lowlight = require('lowlight/lib/core')
 var attacher = require('./core')
 
-module.exports.light = attacher(lowlight)
+module.exports = attacher(lowlight)
