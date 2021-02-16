@@ -77,9 +77,14 @@ function attacher(options) {
 
       throw error
     }
-
-    if (!lang && result.language) {
-      props.className.push('language-' + result.language)
+    
+    if (!lang) {
+      if (result.language) {
+        props.className.push('language-' + result.language)
+      } else {
+        // result.value is empty when highlightjs cant autodetect language
+        result.value = node.children
+      } 
     }
 
     node.children = result.value
