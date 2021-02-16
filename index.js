@@ -67,27 +67,20 @@ function attacher(options) {
         ? lowlight.highlight(lang, toText(parent), options)
         : lowlight.highlightAuto(toText(parent), options)
     } catch (error) {
-      if (
-        error &&
-        settings.ignoreMissing &&
-        /Unknown language/.test(error.message)
-      ) {
-        return
+      if (!settings.ignoreMissing || !/Unknown language/.test(error.message)) {
+        throw error
       }
 
-      throw error
-    }
-    
-    if (!lang) {
-      if (result.language) {
-        props.className.push('language-' + result.language)
-      } else {
-        // result.value is empty when highlightjs cant autodetect language
-        result.value = node.children
-      } 
+      result = {}
     }
 
-    node.children = result.value
+    if (!lang && result.language) {
+      props.className.push('language-' + result.language)
+    }
+
+    if (result.value) {
+      node.children = result.value
+    }
   }
 }
 

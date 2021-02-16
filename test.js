@@ -293,6 +293,16 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
+      .use(highlight, {subset: ['cpp']})
+      .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
+      .toString(),
+    '<pre><code class="hljs language-cpp"><span class="hljs-function">def <span class="hljs-title">add</span><span class="hljs-params">(a, b)</span>:\n  <span class="hljs-keyword">return</span> a + b</span></code></pre>',
+    'should not remove contents'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
       .use(highlight)
       .processSync(
         [
