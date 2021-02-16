@@ -6,7 +6,7 @@ var visit = require('unist-util-visit')
 module.exports = core
 
 function core(lowlight) {
-  return function attacher(options) {
+  return function (options) {
     var settings = options || {}
     var name = 'hljs'
     var pos
@@ -88,25 +88,25 @@ function core(lowlight) {
   }
 }
 
-  // Get the programming language of `node`.
-  function language(node) {
-    var className = node.properties.className || []
-    var index = -1
-    var value
+// Get the programming language of `node`.
+function language(node) {
+  var className = node.properties.className || []
+  var index = -1
+  var value
 
-    while (++index < className.length) {
-      value = className[index]
+  while (++index < className.length) {
+    value = className[index]
 
-      if (value === 'no-highlight' || value === 'nohighlight') {
-        return false
-      }
+    if (value === 'no-highlight' || value === 'nohighlight') {
+      return false
+    }
 
-      if (value.slice(0, 5) === 'lang-') {
-        return value.slice(5)
-      }
+    if (value.slice(0, 5) === 'lang-') {
+      return value.slice(5)
+    }
 
-      if (value.slice(0, 9) === 'language-') {
-        return value.slice(9)
-      }
+    if (value.slice(0, 9) === 'language-') {
+      return value.slice(9)
     }
   }
+}
