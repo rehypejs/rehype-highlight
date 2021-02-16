@@ -25,7 +25,8 @@
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
   "files": [
-    "index.js"
+    "index.js",
+    "light.js"
   ],
   "dependencies": {
     "hast-util-to-text": "^2.0.0",
