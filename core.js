@@ -3,7 +3,7 @@
 var toText = require('hast-util-to-text')
 var visit = require('unist-util-visit')
 
-module.exports = core
+module.exports = createPlugin
 
 function createPlugin(lowlight) {
   return function (options) {
