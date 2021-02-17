@@ -5,7 +5,7 @@ var visit = require('unist-util-visit')
 
 module.exports = core
 
-function core(lowlight) {
+function createPlugin(lowlight) {
   return function (options) {
     var settings = options || {}
     var name = 'hljs'
