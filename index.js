@@ -1,5 +1,5 @@
 'use strict'
 var lowlight = require('lowlight')
-var attacher = require('./core')
+var createPlugin = require('./core')
 
 module.exports = createPlugin(lowlight)
