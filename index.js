@@ -2,4 +2,4 @@
 var lowlight = require('lowlight')
 var attacher = require('./core')
 
-module.exports = attacher(lowlight)
+module.exports = createPlugin(lowlight)
