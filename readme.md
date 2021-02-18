@@ -112,7 +112,7 @@ include all the highlighters.
 
 > :warning: Please configure `languages`, as otherwise nothing gets highlighted.
 
-In the example below, only the javascript and typescript
+In the example below, only the JavaScript and TypeScript
 highlighters are included:
 
 ```js
