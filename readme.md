@@ -123,14 +123,15 @@ var highlight = require('rehype-highlight/light')
 
 rehype()
   .data('settings', {fragment: true})
-  .use(highlight, {  
-    // Don't forget to define the languages you need
-    languages: {    
-        javascript: require('highlight.js/lib/languages/javascript'),
-        typescript: require('highlight.js/lib/languages/typescript'),
-      },})
-  .process(vfile.readSync('example.html'), function(err, file) {
-    console.error(report(err || file))
+  .use(highlight, {
+    // Don’t forget to define the languages you need
+    languages: {
+      javascript: require('highlight.js/lib/languages/javascript'),
+      typescript: require('highlight.js/lib/languages/typescript')
+    }
+  })
+  .process(vfile.readSync('example.html'), function (error, file) {
+    console.error(report(error || file))
     console.log(String(file))
   })
 ```
