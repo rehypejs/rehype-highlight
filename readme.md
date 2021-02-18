@@ -110,8 +110,7 @@ Each key/value pair passed as arguments to
 It is not suggested to require `rehype-highlight` in the browser as it will
 include all the highlighters.
 
-> :warning: Don’t forget to configure the languages option
-> or the highlight won’t work.
+> :warning: Please configure `languages`, as otherwise nothing gets highlighted.
 
 In the example below, only the javascript and typescript
 highlighters are included:
