@@ -1,6 +1,6 @@
 {
   "name": "rehype-highlight",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "rehype plugin to highlight code blocks with lowlight (highlight.js)",
   "license": "MIT",
   "keywords": [
