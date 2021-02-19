@@ -105,6 +105,37 @@ Register more languages (`Object<string | function>`, default: `{}`).
 Each key/value pair passed as arguments to
 [`lowlight.registerLanguage`][register-language].
 
+## Browser
+
+It is not suggested to require `rehype-highlight` in the browser as it will
+include all the highlighters.
+
+> :warning: Please configure `languages`, as otherwise nothing gets highlighted.
+
+In the example below, only the JavaScript and TypeScript
+highlighters are included:
+
+```js
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var rehype = require('rehype')
+var highlight = require('rehype-highlight/light')
+
+rehype()
+  .data('settings', {fragment: true})
+  .use(highlight, {
+    // Don’t forget to define the languages you need
+    languages: {
+      javascript: require('highlight.js/lib/languages/javascript'),
+      typescript: require('highlight.js/lib/languages/typescript')
+    }
+  })
+  .process(vfile.readSync('example.html'), function (error, file) {
+    console.error(report(error || file))
+    console.log(String(file))
+  })
+```
+
 ## Security
 
 Use of `rehype-highlight` *should* be safe to use as `lowlight` *should* be safe

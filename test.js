@@ -3,6 +3,10 @@
 var test = require('tape')
 var rehype = require('rehype')
 var highlight = require('.')
+var light = require('./light')
+var js = require('highlight.js/lib/languages/javascript')
+var as = require('highlight.js/lib/languages/applescript')
+var cp = require('highlight.js/lib/languages/cpp')
 
 test('highlight()', function (t) {
   t.equal(
@@ -432,6 +436,114 @@ test('highlight()', function (t) {
       '<pre><code class="hljs language-subunit"><span class="hljs-keyword">test </span>normal text</code></pre>'
     ].join('\n'),
     'should register languages'
+  )
+
+  t.end()
+})
+
+// Light section
+
+test('highlight/light()', function (t) {
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light)
+      .processSync(
+        ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
+      )
+      .toString(),
+    ['<h1>Hello World!</h1>', '', '<pre><code class="hljs"></code></pre>'].join(
+      '\n'
+    ),
+    'empty'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light, {languages: {javascript: js}})
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
+    ].join('\n'),
+    'should highlight (no class)'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light, {subset: ['applescript'], languages: {applescript: as}})
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs language-applescript"><span class="hljs-string">"use strict"</span>;</code></pre>'
+    ].join('\n'),
+    'should highlight (no class, subset)'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light, {subset: false, languages: {javascript: js}})
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
+      '\n'
+    ),
+    'should not highlight (no class, subset: false)'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light, {prefix: 'foo', languages: {javascript: js}})
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="foo language-javascript"><span class="foometa">"use strict"</span>;</code></pre>'
+    ].join('\n'),
+    'should highlight (prefix without dash)'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(light, {subset: ['cpp'], languages: {cpp: cp}})
+      .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
+      .toString(),
+    '<pre><code class="hljs language-cpp"><span class="hljs-function">def <span class="hljs-title">add</span><span class="hljs-params">(a, b)</span>:\n  <span class="hljs-keyword">return</span> a + b</span></code></pre>',
+    'should not remove contents'
   )
 
   t.end()
