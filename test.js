@@ -8,6 +8,32 @@ var js = require('highlight.js/lib/languages/javascript')
 var as = require('highlight.js/lib/languages/applescript')
 var cp = require('highlight.js/lib/languages/cpp')
 
+test('options.languages', function (t) {
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(highlight, {
+        languages: {
+          js: js
+        }
+      })
+      .processSync(
+        ['<pre><code class="js">const two = 2;</code></pre>'].join('\n')
+      )
+      .toString(),
+    [
+      '<pre><code class="hljs js javascript">',
+      '<const>two = <span class="hljs-number">2</span>;</const>',
+      '</code></pre>'
+    ].join(
+      '\n'
+    ),
+    'empty'
+  )
+
+  t.end()
+})
+
 test('highlight()', function (t) {
   t.equal(
     rehype()
