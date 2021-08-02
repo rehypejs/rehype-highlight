@@ -1,10 +1,6 @@
 import test from 'tape'
 import rehype from 'rehype'
 import highlight from './index.js'
-import light from './light.js'
-import js from 'highlight.js/lib/languages/javascript.js'
-import as from 'highlight.js/lib/languages/applescript.js'
-import cp from 'highlight.js/lib/languages/cpp.js'
 
 test('highlight()', function (t) {
   t.equal(
@@ -44,7 +40,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {subset: ['applescript']})
+      .use(highlight, {subset: ['arduino']})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -56,7 +52,7 @@ test('highlight()', function (t) {
     [
       '<h1>Hello World!</h1>',
       '',
-      '<pre><code class="hljs language-applescript"><span class="hljs-string">"use strict"</span>;</code></pre>'
+      '<pre><code class="hljs language-arduino"><span class="hljs-string">"use strict"</span>;</code></pre>'
     ].join('\n'),
     'should highlight (no class, subset)'
   )
@@ -136,7 +132,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (lang class)'
   )
@@ -158,7 +154,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (language class)'
   )
@@ -180,7 +176,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (long name)'
   )
@@ -244,7 +240,7 @@ test('highlight()', function (t) {
         )
         .toString()
     },
-    'Unknown language: `foobar` is not registered',
+    /Unknown language: `foobar` is not registered/,
     'should throw on missing languages'
   )
 
@@ -292,7 +288,7 @@ test('highlight()', function (t) {
     'should not highlight plainText-ed languages'
   )
 
-  // To do: why is this not highlighted?
+  // For some reason this isn’t detected as c++.
   t.equal(
     rehype()
       .data('settings', {fragment: true})
@@ -320,7 +316,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should reprocess exact'
   )
@@ -329,19 +325,13 @@ test('highlight()', function (t) {
     rehype()
       .data('settings', {fragment: true})
       .use(highlight, {
-        aliases: {tex: ['latex']}
+        aliases: {javascript: ['funkyscript']}
       })
       .processSync(
-        [
-          '<pre><code class="lang-latex">\\begin{document}',
-          '\\end{document}</code></pre>'
-        ].join('\n')
+        '<pre><code class="lang-funkyscript">console.log(1)</code></pre>'
       )
       .toString(),
-    [
-      '<pre><code class="hljs lang-latex"><span class="hljs-keyword">\\begin</span>{document}',
-      '<span class="hljs-keyword">\\end</span>{document}</code></pre>'
-    ].join('\n'),
+    '<pre><code class="hljs lang-funkyscript"><span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-number">1</span>)</code></pre>',
     'should parse custom language'
   )
 
@@ -354,7 +344,7 @@ test('highlight()', function (t) {
           '<h1>Hello World!</h1>',
           '',
           '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-          '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+          '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
         ].join('\n')
       )
       .toString(),
@@ -362,7 +352,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should reprocess exact'
   )
@@ -403,7 +393,7 @@ test('highlight()', function (t) {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;',
-      '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"very strict"</span>)</code></pre>'
+      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"very strict"</span>)</code></pre>'
     ].join('\n'),
     'should support `<br>` elements'
   )
@@ -432,121 +422,9 @@ test('highlight()', function (t) {
     [
       '<h1>Hello World!</h1>',
       '',
-      '<pre><code class="hljs language-subunit"><span class="hljs-keyword">test </span>normal text</code></pre>'
+      '<pre><code class="hljs language-scss">test <span class="hljs-attribute">normal</span> text</code></pre>'
     ].join('\n'),
     'should register languages'
-  )
-
-  t.end()
-})
-
-// Light section
-
-test('highlight/light()', function (t) {
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light)
-      .processSync(
-        ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
-      )
-      .toString(),
-    ['<h1>Hello World!</h1>', '', '<pre><code class="hljs"></code></pre>'].join(
-      '\n'
-    ),
-    'empty'
-  )
-
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light, {languages: {javascript: js}})
-      .processSync(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code>"use strict";</code></pre>'
-        ].join('\n')
-      )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (no class)'
-  )
-
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light, {
-        subset: ['applescript'],
-        languages: {applescript: as}
-      })
-      .processSync(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code>"use strict";</code></pre>'
-        ].join('\n')
-      )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-applescript"><span class="hljs-string">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (no class, subset)'
-  )
-
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light, {subset: false, languages: {javascript: js}})
-      .processSync(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code>"use strict";</code></pre>'
-        ].join('\n')
-      )
-      .toString(),
-    ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
-      '\n'
-    ),
-    'should not highlight (no class, subset: false)'
-  )
-
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light, {prefix: 'foo', languages: {javascript: js}})
-      .processSync(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code>"use strict";</code></pre>'
-        ].join('\n')
-      )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="foo language-javascript"><span class="foometa">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (prefix without dash)'
-  )
-
-  // To do: why is this not highlighted?
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(light, {subset: ['cpp'], languages: {cpp: cp}})
-      .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
-      .toString(),
-    '<pre><code class="hljs">def add(a, b):\n  return a + b</code></pre>',
-    'should not remove contents'
   )
 
   t.end()

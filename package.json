@@ -28,14 +28,12 @@
   "type": "module",
   "main": "index.js",
   "files": [
-    "core.js",
-    "index.js",
-    "light.js"
+    "index.js"
   ],
   "dependencies": {
-    "hast-util-to-text": "^2.0.0",
-    "lowlight": "^1.10.0",
-    "unist-util-visit": "^2.0.0"
+    "hast-util-to-text": "^3.0.0",
+    "lowlight": "^2.0.0",
+    "unist-util-visit": "^4.0.0"
   },
   "devDependencies": {
     "c8": "^7.0.0",

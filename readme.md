@@ -11,6 +11,11 @@
 [**rehype**][rehype] plugin to highlight the syntax of code with
 [**lowlight**][lowlight] ([`highlight.js`][highlight-js]).
 
+`rehype-highlight` is built to work with all syntaxes supported by
+[`highlight.js`][highlight-js].
+It starts off with 35 [common languages][common] registered.
+You can add up to 191 languages.
+
 ## Install
 
 [npm][]:
@@ -69,6 +74,11 @@ Configure the language by using a `lang-js` or `language-js` class.
 Ignore `code` with a `no-highlight` or `nohighlight` class.
 Will auto-detect the syntax language otherwise.
 
+`rehype-highlight` is built to work with all syntaxes supported by
+`highlight.js`.
+It starts off with 35 [common languages][common] registered.
+You can add up to 191 languages.
+
 ##### `options`
 
 ###### `options.prefix`
@@ -105,36 +115,10 @@ Register more languages (`Object<string | function>`, default: `{}`).
 Each key/value pair passed as arguments to
 [`lowlight.registerLanguage`][register-language].
 
-## Browser
-
-It is not suggested to require `rehype-highlight` in the browser as it will
-include all the highlighters.
-
-> :warning: Please configure `languages`, as otherwise nothing gets highlighted.
-
-In the example below, only the JavaScript and TypeScript
-highlighters are included:
-
-```js
-var vfile = require('to-vfile')
-var report = require('vfile-reporter')
-var rehype = require('rehype')
-var highlight = require('rehype-highlight/light')
-
-rehype()
-  .data('settings', {fragment: true})
-  .use(highlight, {
-    // Don’t forget to define the languages you need
-    languages: {
-      javascript: require('highlight.js/lib/languages/javascript'),
-      typescript: require('highlight.js/lib/languages/typescript')
-    }
-  })
-  .process(vfile.readSync('example.html'), function (error, file) {
-    console.error(report(error || file))
-    console.log(String(file))
-  })
-```
+`rehype-highlight` is built to work with all syntaxes supported by
+`highlight.js`.
+It starts off with 35 [common languages][common] registered.
+You can add up to 191 languages.
 
 ## Security
 
@@ -209,3 +193,5 @@ abide by its terms.
 [highlight-js]: https://github.com/isagalaev/highlight.js
 
 [sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[common]: https://github.com/wooorm/lowlight#syntaxes
