@@ -1,5 +1,5 @@
 import test from 'tape'
-import rehype from 'rehype'
+import {rehype} from 'rehype'
 import highlight from './index.js'
 
 test('highlight()', function (t) {
