@@ -18,6 +18,9 @@ You can add up to 191 languages.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -38,16 +41,19 @@ console.warn("Hello, " + name + "!")</code></pre>
 …and `example.js` like this:
 
 ```js
-var vfile = require('to-vfile')
-var report = require('vfile-reporter')
-var rehype = require('rehype')
-var highlight = require('rehype-highlight')
+import {readSync} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
+import {rehype} from 'rehype'
+import rehypeHighlight from 'rehype-highlight'
+
+const file = readSync('example.html')
 
 rehype()
   .data('settings', {fragment: true})
-  .use(highlight)
-  .process(vfile.readSync('example.html'), function(err, file) {
-    console.error(report(err || file))
+  .use(rehypeHighlight)
+  .process(file)
+  .then((file) => {
+    console.error(reporter(file))
     console.log(String(file))
   })
 ```
@@ -64,7 +70,10 @@ example.html: no issues found
 
 ## API
 
-### `rehype().use(highlight[, options])`
+This package exports no identifiers.
+The default export is `rehypeHighlight`.
+
+### `unified().use(rehypeHighlight[, options])`
 
 Syntax highlight `pre > code`.
 Uses [**lowlight**][lowlight] under the hood, which is a virtual version of
