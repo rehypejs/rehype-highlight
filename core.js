@@ -77,7 +77,7 @@ export function createPlugin(lowlight) {
         props.className.push('language-' + result.language)
       }
 
-      if (result.value) {
+      if (Array.isArray(result.value) && result.value.length > 0) {
         node.children = result.value
       }
     }
