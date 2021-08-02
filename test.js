@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('lowlight/lib/core.js').HighlightSyntax} HighlightSyntax
+ */
+
 import test from 'tape'
 import {rehype} from 'rehype'
 import rehypeHighlight from './index.js'
@@ -398,19 +402,21 @@ test('rehypeHighlight', (t) => {
     'should support `<br>` elements'
   )
 
+  /**
+   * @type {HighlightSyntax}
+   */
+  function testLang() {
+    return {
+      contains: [],
+      aliases: ['test'],
+      keywords: {keyword: 'test'}
+    }
+  }
+
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {
-        languages: {
-          test() {
-            return {
-              aliases: ['test'],
-              keywords: {keyword: 'test'}
-            }
-          }
-        }
-      })
+      .use(rehypeHighlight, {languages: {test: testLang}})
       .processSync(
         [
           '<h1>Hello World!</h1>',

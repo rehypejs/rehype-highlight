@@ -120,7 +120,7 @@ Passed to [`lowlight.registerAlias`][register-alias].
 
 ###### `options.languages`
 
-Register more languages (`Object<string | function>`, default: `{}`).
+Register more languages (`Record<string, Function>`, default: `{}`).
 Each key/value pair passed as arguments to
 [`lowlight.registerLanguage`][register-language].
 
