@@ -1,12 +1,12 @@
 import test from 'tape'
 import {rehype} from 'rehype'
-import highlight from './index.js'
+import rehypeHighlight from './index.js'
 
-test('highlight()', function (t) {
+test('rehypeHighlight', (t) => {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
       )
@@ -20,7 +20,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -40,7 +40,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {subset: ['arduino']})
+      .use(rehypeHighlight, {subset: ['arduino']})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -60,7 +60,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {subset: false})
+      .use(rehypeHighlight, {subset: false})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -78,7 +78,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {prefix: 'foo'})
+      .use(rehypeHighlight, {prefix: 'foo'})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -98,7 +98,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {prefix: 'foo-'})
+      .use(rehypeHighlight, {prefix: 'foo-'})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -118,7 +118,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -140,7 +140,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -162,7 +162,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -184,7 +184,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -206,7 +206,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -226,10 +226,10 @@ test('highlight()', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       rehype()
         .data('settings', {fragment: true})
-        .use(highlight)
+        .use(rehypeHighlight)
         .processSync(
           [
             '<h1>Hello World!</h1>',
@@ -247,7 +247,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {ignoreMissing: true})
+      .use(rehypeHighlight, {ignoreMissing: true})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -269,7 +269,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {plainText: ['js']})
+      .use(rehypeHighlight, {plainText: ['js']})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -292,7 +292,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {subset: ['cpp']})
+      .use(rehypeHighlight, {subset: ['cpp']})
       .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
       .toString(),
     '<pre><code class="hljs">def add(a, b):\n  return a + b</code></pre>',
@@ -302,7 +302,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -324,7 +324,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {
+      .use(rehypeHighlight, {
         aliases: {javascript: ['funkyscript']}
       })
       .processSync(
@@ -338,7 +338,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -360,7 +360,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -380,7 +380,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight)
+      .use(rehypeHighlight)
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -401,7 +401,7 @@ test('highlight()', function (t) {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(highlight, {
+      .use(rehypeHighlight, {
         languages: {
           test() {
             return {

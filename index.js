@@ -2,25 +2,28 @@ import {lowlight} from 'lowlight'
 import {toText} from 'hast-util-to-text'
 import {visit} from 'unist-util-visit'
 
-export default function rehypeHighlight(options) {
-  var settings = options || {}
-  var name = 'hljs'
-  var pos
+const own = {}.hasOwnProperty
 
-  if (settings.aliases) {
-    lowlight.registerAlias(settings.aliases)
+export default function rehypeHighlight(options = {}) {
+  let name = 'hljs'
+
+  if (options.aliases) {
+    lowlight.registerAlias(options.aliases)
   }
 
-  if (settings.languages) {
-    // eslint-disable-next-line guard-for-in
-    for (const name in settings.languages) {
-      lowlight.registerLanguage(name, settings.languages[name])
+  if (options.languages) {
+    let key
+
+    for (key in options.languages) {
+      if (own.call(options.languages, key)) {
+        lowlight.registerLanguage(key, options.languages[key])
+      }
     }
   }
 
-  if (settings.prefix) {
-    pos = settings.prefix.indexOf('-')
-    name = pos > -1 ? settings.prefix.slice(0, pos) : settings.prefix
+  if (options.prefix) {
+    const pos = options.prefix.indexOf('-')
+    name = pos > -1 ? options.prefix.slice(0, pos) : options.prefix
   }
 
   return transformer
@@ -30,40 +33,41 @@ export default function rehypeHighlight(options) {
   }
 
   function visitor(node, _, parent) {
-    var props
-    var result
-    var lang
-
-    if (!parent || parent.tagName !== 'pre' || node.tagName !== 'code') {
-      return
-    }
-
-    lang = language(node)
-
     if (
-      lang === false ||
-      (!lang && settings.subset === false) ||
-      (settings.plainText && settings.plainText.indexOf(lang) > -1)
+      !parent ||
+      parent.tagName !== 'pre' ||
+      node.tagName !== 'code' ||
+      !node.properties
     ) {
       return
     }
 
-    props = node.properties
+    const lang = language(node)
 
-    if (!props.className) {
-      props.className = []
+    if (
+      lang === false ||
+      (!lang && options.subset === false) ||
+      (options.plainText && options.plainText.includes(lang))
+    ) {
+      return
     }
 
-    if (props.className.indexOf(name) < 0) {
-      props.className.unshift(name)
+    if (!node.properties.className) {
+      node.properties.className = []
     }
+
+    if (!node.properties.className.includes(name)) {
+      node.properties.className.unshift(name)
+    }
+
+    let result
 
     try {
       result = lang
         ? lowlight.highlight(lang, toText(parent), options)
         : lowlight.highlightAuto(toText(parent), options)
     } catch (error) {
-      if (!settings.ignoreMissing || !/Unknown language/.test(error.message)) {
+      if (!options.ignoreMissing || !/Unknown language/.test(error.message)) {
         throw error
       }
 
@@ -71,7 +75,7 @@ export default function rehypeHighlight(options) {
     }
 
     if (!lang && result.data.language) {
-      props.className.push('language-' + result.data.language)
+      node.properties.className.push('language-' + result.data.language)
     }
 
     if (Array.isArray(result.children) && result.children.length > 0) {
@@ -82,12 +86,11 @@ export default function rehypeHighlight(options) {
 
 // Get the programming language of `node`.
 function language(node) {
-  var className = node.properties.className || []
-  var index = -1
-  var value
+  const className = node.properties.className || []
+  let index = -1
 
   while (++index < className.length) {
-    value = className[index]
+    const value = className[index]
 
     if (value === 'no-highlight' || value === 'nohighlight') {
       return false
