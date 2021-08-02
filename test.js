@@ -1,12 +1,10 @@
-'use strict'
-
-var test = require('tape')
-var rehype = require('rehype')
-var highlight = require('.')
-var light = require('./light')
-var js = require('highlight.js/lib/languages/javascript')
-var as = require('highlight.js/lib/languages/applescript')
-var cp = require('highlight.js/lib/languages/cpp')
+import test from 'tape'
+import rehype from 'rehype'
+import highlight from './index.js'
+import light from './light.js'
+import js from 'highlight.js/lib/languages/javascript.js'
+import as from 'highlight.js/lib/languages/applescript.js'
+import cp from 'highlight.js/lib/languages/cpp.js'
 
 test('highlight()', function (t) {
   t.equal(
@@ -414,7 +412,7 @@ test('highlight()', function (t) {
       .data('settings', {fragment: true})
       .use(highlight, {
         languages: {
-          test: function () {
+          test() {
             return {
               aliases: ['test'],
               keywords: {keyword: 'test'}

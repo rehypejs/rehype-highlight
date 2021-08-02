@@ -1,11 +1,7 @@
-'use strict'
+import toText from 'hast-util-to-text'
+import visit from 'unist-util-visit'
 
-var toText = require('hast-util-to-text')
-var visit = require('unist-util-visit')
-
-module.exports = createPlugin
-
-function createPlugin(lowlight) {
+export function createPlugin(lowlight) {
   return function (options) {
     var settings = options || {}
     var name = 'hljs'
@@ -17,7 +13,7 @@ function createPlugin(lowlight) {
 
     if (settings.languages) {
       // eslint-disable-next-line guard-for-in
-      for (let name in settings.languages) {
+      for (const name in settings.languages) {
         lowlight.registerLanguage(name, settings.languages[name])
       }
     }

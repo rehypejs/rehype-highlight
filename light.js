@@ -1,5 +1,4 @@
-'use strict'
-var lowlight = require('lowlight/lib/core')
-var createPlugin = require('./core')
+import lowlight from 'lowlight/lib/core.js'
+import {createPlugin} from './core.js'
 
-module.exports = createPlugin(lowlight)
+export default createPlugin(lowlight)
