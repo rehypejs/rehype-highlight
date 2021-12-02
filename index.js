@@ -1,5 +1,5 @@
 /**
- * @typedef {import('lowlight/lib/core.js').LowlightRoot} LowlightRoot
+ * @typedef {import('lowlight').Root} LowlightRoot
  * @typedef {import('lowlight/lib/core.js').HighlightSyntax} HighlightSyntax
  * @typedef {import('hast').Root} Root
  * @typedef {import('hast').Element} Element
