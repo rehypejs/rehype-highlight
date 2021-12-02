@@ -106,7 +106,8 @@ export default function rehypeHighlight(options = {}) {
           : // @ts-expect-error: we checked that `subset` is not a boolean.
             lowlight.highlightAuto(toText(parent), {prefix, subset})
       } catch (error) {
-        if (!ignoreMissing || !/Unknown language/.test(error.message)) {
+        const exception = /** @type {Error} */ (error)
+        if (!ignoreMissing || !/Unknown language/.test(exception.message)) {
           throw error
         }
 
