@@ -9,7 +9,7 @@
  *   Configuration.
  * @property {string} [prefix='hljs-']
  *   Prefix to use before classes.
- * @property {boolean|string[]} [subset]
+ * @property {boolean|Array<string>} [subset]
  *   Scope of languages to check when auto-detecting (default: all languages).
  *   Pass `false` to not highlight code without language classes.
  * @property {boolean} [ignoreMissing=false]
@@ -17,11 +17,11 @@
  *   By default, unregistered syntaxes throw an error when they are used.
  *   Pass `true` to swallow those errors and thus ignore code with unknown code
  *   languages.
- * @property {string[]} [plainText=[]]
+ * @property {Array<string>} [plainText=[]]
  *   List of plain-text languages.
  *   Pass any languages you would like to be kept as plain-text instead of
  *   getting highlighted.
- * @property {Record<string, string|string[]>} [aliases={}]
+ * @property {Record<string, string|Array<string>>} [aliases={}]
  *   Register more aliases.
  *   Passed to `lowlight.registerAlias`.
  * @property {Record<string, HighlightSyntax>} [languages={}]
@@ -38,7 +38,7 @@ const own = {}.hasOwnProperty
 /**
  * Plugin to highlight the syntax of code with lowlight (`highlight.js`).
  *
- * @type {import('unified').Plugin<[Options?] | void[], Root>}
+ * @type {import('unified').Plugin<[Options?] | Array<void>, Root>}
  */
 export default function rehypeHighlight(options = {}) {
   const {aliases, languages, prefix, plainText, ignoreMissing, subset} = options

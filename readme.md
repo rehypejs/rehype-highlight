@@ -96,7 +96,7 @@ Prefix to use before classes (`string`, default: `'hljs-'`).
 
 ###### `options.subset`
 
-Scope of languages to check when auto-detecting (`boolean` or `Array.<string>`,
+Scope of languages to check when auto-detecting (`boolean` or `Array<string>`,
 default: all languages).
 Pass `false` to not highlight code without language classes.
 
@@ -109,13 +109,13 @@ languages.
 
 ###### `options.plainText`
 
-List of plain-text languages (`Array.<string>`, default: `[]`).
+List of plain-text languages (`Array<string>`, default: `[]`).
 Pass any languages you would like to be kept as plain-text instead of getting
 highlighted.
 
 ###### `options.aliases`
 
-Register more aliases (`Object<string | Array.<string>>`, default: `{}`).
+Register more aliases (`Record<string, string|Array<string>>`, default: `{}`).
 Passed to [`lowlight.registerAlias`][register-alias].
 
 ###### `options.languages`
