@@ -33,17 +33,20 @@
 
 ## What is this?
 
-This package is a [unified][] ([rehype][]) plugin to syntax highlight.
-`highlight.js` is pretty fast, relatively small, and quite good syntax
+This package is a [unified][] ([rehype][]) plugin to apply syntax highlighting
+to code with `highlight.js`.
+`highlight.js` is pretty fast, relatively small, and a quite good syntax
 highlighter which has support for up to 190 different languages.
-It bundles 35 [common languages][common] by default and you can register more.
+This package bundles 35 [common languages][common] by default and you can
+register more.
 
-It looks for `<code>` elements (directly in `<pre>`) and highlights them.
+It looks for `<code>` elements (when directly in `<pre>` elements) and changes
+them.
 You can specify the code language (such as Python) with a `language-*` or
 `lang-*` class, where the `*` can be for example `js` (so `language-js`), `md`,
 `css`, etc.
 By default, even without a class, all `<pre><code>` is highlighted by
-auto-detecting which code language it looks like.
+automatically detecting which code language it seems to be.
 You can prevent that with a `no-highlight` or `nohighlight` class on the
 `<code>` or by passing `options.subset: false`.
 
@@ -150,8 +153,8 @@ Prefix to use before classes (`string`, default: `'hljs-'`).
 
 ###### `options.subset`
 
-Scope of languages to check when auto-detecting (`boolean` or `Array<string>`,
-default: all languages).
+Scope of languages to check when automatically detecting (`boolean` or
+`Array<string>`, default: all languages).
 Pass `false` to not highlight code without language classes.
 
 ###### `options.plainText`
@@ -186,10 +189,11 @@ Each key/value pair passed as arguments to
 
 There are three ways to not apply syntax highlighting to code blocks.
 They can be ignored with an explicit class of `no-highlight` (or `nohighlight`),
-an explicit language name that’s specified in `options.plainText`, or by setting
-`options.subset` to `false` to prevent `<code>` without a class from being
-autodetected.
-`example.html`:
+an explicit language name that’s listed in `options.plainText`, or by setting
+`options.subset` to `false`, which prevents `<code>` without a class from being
+automatically detected.
+
+For example, with `example.html`:
 
 ```html
 <pre><code>this won’t be highlighted due to `subset: false`</code></pre>
@@ -199,7 +203,7 @@ autodetected.
 <pre><code class="language-txt">this won’t be highlighted due to `plainText: ['txt']`</code></pre>
 ```
 
-`example.js`:
+And `example.js`:
 
 ```js
 import {read} from 'to-vfile'
@@ -218,21 +222,22 @@ async function main() {
 }
 ```
 
-Running that yields the same as `example.html`.
+Running that yields the same as `example.html`: none of them are highlighted.
 
 ### Example: registering
 
 `rehype-highlight` supports 35 common used languages by default.
-This makes it light to load in Node.js and browsers while supporting most cases
+This makes it small to load in browsers and Node.js, while supporting most cases
 by default.
 It’s possible to add support for more languages.
-`example.html`:
+
+For example, with `example.html`:
 
 ```html
 <pre><code class="language-bnf">a ::= 'a' | 'A'</code></pre>
 ```
 
-`example.js`:
+And `example.js`:
 
 ```js
 import {read} from 'to-vfile'
@@ -252,7 +257,7 @@ async function main() {
 }
 ```
 
-Yields:
+Running that yields:
 
 ```html
 <pre><code class="hljs language-bnf">a ::= <span class="hljs-string">'a'</span> | <span class="hljs-string">'A'</span></code></pre>
@@ -260,14 +265,15 @@ Yields:
 
 ### Example: aliases
 
-You can map custom language flags to `highlight.js` languages.
-`example.html`:
+You can map your own language flags to `highlight.js` languages.
+
+For example, with `example.html`:
 
 ```html
 <pre><code class="language-custom-script">console.log(1)</code></pre>
 ```
 
-`example.js`:
+And `example.js`:
 
 ```js
 import {read} from 'to-vfile'
@@ -289,7 +295,7 @@ async function main() {
 }
 ```
 
-Yields:
+Running that yields:
 
 ```html
 <pre><code class="hljs language-custom-script"><span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-number">1</span>)</code></pre>
@@ -298,20 +304,21 @@ Yields:
 ### Example: sanitation
 
 Applying syntax highlighting in rehype operates on `<code>` elements with
-certain classes and it injects many more `<span>` elements with classes.
+certain classes and it injects many `<span>` elements with classes.
 Allowing arbitrary classes is an opening for XSS vulnerabilities.
 
 Working with user input and HTML generally opens you up to XSS vulnerabilities,
-so it’s recommend to use sanitation mechanisms, typically being
+so it’s recommend to use sanitation mechanisms, typically
 [`rehype-sanitize`][rehype-sanitize].
-Because arbitrary classes are one such opening, using `rehype-highlight` with
-`rehype-sanitize` requires some configuration to make it work.
+Because arbitrary classes are one such opening that `rehype-sanitize` takes care
+off, using `rehype-highlight` with `rehype-sanitize` requires some configuration
+to make it work.
 
 There are two ways to make it work.
-Either by using `rehype-sanitize` first while allow the classes on `<code>` and
-then using `rehype-highlight`, or alternatively first using `rehype-highlight`
-and then using `rehype-sanitize` while allowing the classes on `<span>`
-elements.
+Either by using `rehype-sanitize` first while allowing the classes on `<code>`
+and then using `rehype-highlight`, or alternatively first using
+`rehype-highlight` and then using `rehype-sanitize` while allowing the classes
+on `<span>` elements.
 Using `rehype-sanitize` before `rehype-highlight`:
 
 ```js
