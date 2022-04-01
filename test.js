@@ -136,7 +136,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (lang class)'
   )
@@ -158,7 +158,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (language class)'
   )
@@ -180,7 +180,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should highlight (long name)'
   )
@@ -320,7 +320,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should reprocess exact'
   )
@@ -335,7 +335,7 @@ test('rehypeHighlight', (t) => {
         '<pre><code class="lang-funkyscript">console.log(1)</code></pre>'
       )
       .toString(),
-    '<pre><code class="hljs lang-funkyscript"><span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-number">1</span>)</code></pre>',
+    '<pre><code class="hljs lang-funkyscript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)</code></pre>',
     'should parse custom language'
   )
 
@@ -348,7 +348,7 @@ test('rehypeHighlight', (t) => {
           '<h1>Hello World!</h1>',
           '',
           '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-          '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+          '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
         ].join('\n')
       )
       .toString(),
@@ -356,7 +356,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
     ].join('\n'),
     'should reprocess exact'
   )
@@ -397,7 +397,7 @@ test('rehypeHighlight', (t) => {
       '<h1>Hello World!</h1>',
       '',
       '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;',
-      '<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-string">"very strict"</span>)</code></pre>'
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"very strict"</span>)</code></pre>'
     ].join('\n'),
     'should support `<br>` elements'
   )
