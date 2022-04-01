@@ -81,17 +81,17 @@ In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
 npm install rehype-highlight
 ```
 
-In Deno with [Skypack][]:
+In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeHighlight from 'https://cdn.skypack.dev/rehype-highlight@5?dts'
+import rehypeHighlight from 'https://esm.sh/rehype-highlight@5'
 ```
 
-In browsers with [Skypack][]:
+In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeHighlight from 'https://cdn.skypack.dev/rehype-highlight@5?min'
+  import rehypeHighlight from 'https://esm.sh/rehype-highlight@5?bundle'
 </script>
 ```
 
@@ -453,7 +453,7 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[skypack]: https://www.skypack.dev
+[esmsh]: https://esm.sh
 
 [health]: https://github.com/rehypejs/.github
 
