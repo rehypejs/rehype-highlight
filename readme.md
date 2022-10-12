@@ -45,10 +45,11 @@ them.
 You can specify the code language (such as Python) with a `language-*` or
 `lang-*` class, where the `*` can be for example `js` (so `language-js`), `md`,
 `css`, etc.
-By default, even without a class, all `<pre><code>` is highlighted by
-automatically detecting which code language it seems to be.
-You can prevent that with a `no-highlight` or `nohighlight` class on the
-`<code>` or by passing `options.subset: false`.
+By default, code without such a language class is not highlighted.
+Pass `detect: true` to detect their programming language and highlight the code
+anyway.
+You can still prevent specific blocks from being highlighted with a
+`no-highlight` or `nohighlight` class on the `<code>`.
 
 **unified** is a project that transforms content with abstract syntax trees
 (ASTs).
@@ -113,16 +114,12 @@ import {read} from 'to-vfile'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
 
-main()
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeHighlight)
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await rehype()
-    .data('settings', {fragment: true})
-    .use(rehypeHighlight)
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Now running `node example.js` yields:
@@ -151,11 +148,15 @@ Configuration (optional).
 
 Prefix to use before classes (`string`, default: `'hljs-'`).
 
+###### `options.detect`
+
+Whether to detect the programming language on code without a language class
+(`boolean`, default: `false`).
+
 ###### `options.subset`
 
-Scope of languages to check when automatically detecting (`boolean` or
-`Array<string>`, default: all languages).
-Pass `false` to not highlight code without language classes.
+Languages to check when automatically detecting (`Array<string>`, default: all
+languages).
 
 ###### `options.plainText`
 

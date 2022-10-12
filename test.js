@@ -10,7 +10,7 @@ test('rehypeHighlight', (t) => {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight)
+      .use(rehypeHighlight, {detect: true})
       .processSync(
         ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
       )
@@ -33,18 +33,36 @@ test('rehypeHighlight', (t) => {
         ].join('\n')
       )
       .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (no class)'
+    ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
+      '\n'
+    ),
+    'should not highlight (no class)'
   )
 
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {subset: ['arduino']})
+      .use(rehypeHighlight, {detect: true})
+      .processSync(
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code>"use strict";</code></pre>'
+        ].join('\n')
+      )
+      .toString(),
+    [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
+    ].join('\n'),
+    'should highlight (`detect`, no class)'
+  )
+
+  t.equal(
+    rehype()
+      .data('settings', {fragment: true})
+      .use(rehypeHighlight, {detect: true, subset: ['arduino']})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -58,13 +76,13 @@ test('rehypeHighlight', (t) => {
       '',
       '<pre><code class="hljs language-arduino"><span class="hljs-string">"use strict"</span>;</code></pre>'
     ].join('\n'),
-    'should highlight (no class, subset)'
+    'should highlight (detect, no class, subset)'
   )
 
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {subset: false})
+      .use(rehypeHighlight, {detect: false})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -76,13 +94,13 @@ test('rehypeHighlight', (t) => {
     ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
       '\n'
     ),
-    'should not highlight (no class, subset: false)'
+    'should not highlight (`detect: false`, no class)'
   )
 
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {prefix: 'foo'})
+      .use(rehypeHighlight, {prefix: 'foo', detect: true})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -102,7 +120,7 @@ test('rehypeHighlight', (t) => {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {prefix: 'foo-'})
+      .use(rehypeHighlight, {prefix: 'foo-', detect: true})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -296,7 +314,7 @@ test('rehypeHighlight', (t) => {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {subset: ['cpp']})
+      .use(rehypeHighlight, {subset: ['cpp'], detect: true})
       .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
       .toString(),
     '<pre><code class="hljs">def add(a, b):\n  return a + b</code></pre>',
@@ -364,7 +382,7 @@ test('rehypeHighlight', (t) => {
   t.equal(
     rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight)
+      .use(rehypeHighlight, {detect: true})
       .processSync(
         [
           '<h1>Hello World!</h1>',
@@ -389,7 +407,7 @@ test('rehypeHighlight', (t) => {
         [
           '<h1>Hello World!</h1>',
           '',
-          '<pre><code>"use strict";<br>console.log("very strict")</code></pre>'
+          '<pre><code class="language-javascript">"use strict";<br>console.log("very strict")</code></pre>'
         ].join('\n')
       )
       .toString(),
@@ -421,7 +439,7 @@ test('rehypeHighlight', (t) => {
         [
           '<h1>Hello World!</h1>',
           '',
-          '<pre><code>test normal text</code></pre>'
+          '<pre><code class="language-scss">test normal text</code></pre>'
         ].join('\n')
       )
       .toString(),
