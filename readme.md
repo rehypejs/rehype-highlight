@@ -191,13 +191,13 @@ Each key/value pair passed as arguments to
 There are three ways to not apply syntax highlighting to code blocks.
 They can be ignored with an explicit class of `no-highlight` (or `nohighlight`),
 an explicit language name that’s listed in `options.plainText`, or by setting
-`options.subset` to `false`, which prevents `<code>` without a class from being
-automatically detected.
+`options.detect` to `false` (default), which prevents `<code>` without a class
+from being automatically detected.
 
 For example, with `example.html`:
 
 ```html
-<pre><code>this won’t be highlighted due to `subset: false`</code></pre>
+<pre><code>this won’t be highlighted due to `detect: false` (default)</code></pre>
 
 <pre><code class="no-highlight">this won’t be highlighted due to its class</code></pre>
 
@@ -211,16 +211,12 @@ import {read} from 'to-vfile'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
 
-main()
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeHighlight, {plainText: ['txt', 'text']})
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await rehype()
-    .data('settings', {fragment: true})
-    .use(rehypeHighlight, {subset: false, plainText: ['txt', 'text']})
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Running that yields the same as `example.html`: none of them are highlighted.
@@ -329,56 +325,51 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize, {defaultSchema} from './index.js'
 import rehypeStringify from 'rehype-stringify'
 
-main()
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeSanitize, {
+    ...defaultSchema,
+    attributes: {
+      ...defaultSchema.attributes,
+      code: [
+        ...(defaultSchema.attributes.code || []),
+        // List of all allowed languages:
+        ['className', 'language-js', 'language-css', 'language-md']
+      ]
+    }
+  })
+  .use(rehypeHighlight)
+  .use(rehypeStringify)
+  .process('<pre><code className="language-js">console.log(1)</code></pre>')
 
-async function main() {
-  const file = await unified()
-    .use(rehypeParse, {fragment: true})
-    .use(rehypeSanitize, {
-      ...defaultSchema,
-      attributes: {
-        ...defaultSchema.attributes,
-        code: [
-          ...(defaultSchema.attributes.code || []),
-          // List of all allowed languages:
-          ['className', 'language-js', 'language-css', 'language-md']
-        ]
-      }
-    })
-    .use(rehypeHighlight, {subset: false})
-    .use(rehypeStringify)
-    .process('<pre><code className="language-js">console.log(1)</code></pre>')
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
 Using `rehype-highlight` before `rehype-sanitize`:
 
 ```diff
- async function main() {
-   const file = await unified()
-     .use(rehypeParse, {fragment: true})
-+    .use(rehypeHighlight, {subset: false})
-     .use(rehypeSanitize, {
-       ...defaultSchema,
-       attributes: {
-         ...defaultSchema.attributes,
--        code: [
--          ...(defaultSchema.attributes.code || []),
--          // List of all allowed languages:
--          ['className', 'hljs', 'language-js', 'language-css', 'language-md']
-+        span: [
-+          ...(defaultSchema.attributes.span || []),
-+          // List of all allowed tokens:
-+          ['className', 'hljs-addition', 'hljs-attr', 'hljs-attribute', 'hljs-built_in', 'hljs-bullet', 'hljs-char', 'hljs-code', 'hljs-comment', 'hljs-deletion', 'hljs-doctag', 'hljs-emphasis', 'hljs-formula', 'hljs-keyword', 'hljs-link', 'hljs-literal', 'hljs-meta', 'hljs-name', 'hljs-number', 'hljs-operator', 'hljs-params', 'hljs-property', 'hljs-punctuation', 'hljs-quote', 'hljs-regexp', 'hljs-section', 'hljs-selector-attr', 'hljs-selector-class', 'hljs-selector-id', 'hljs-selector-pseudo', 'hljs-selector-tag', 'hljs-string', 'hljs-strong', 'hljs-subst', 'hljs-symbol', 'hljs-tag', 'hljs-template-tag', 'hljs-template-variable', 'hljs-title', 'hljs-type', 'hljs-variable'
-+          ]
-         ]
-       }
-     })
--    .use(rehypeHighlight, {subset: false})
-     .use(rehypeStringify)
-     .process('<pre><code className="language-js">console.log(1)</code></pre>')
+ const file = await unified()
+   .use(rehypeParse, {fragment: true})
++  .use(rehypeHighlight)
+   .use(rehypeSanitize, {
+     ...defaultSchema,
+     attributes: {
+       ...defaultSchema.attributes,
+-      code: [
+-        ...(defaultSchema.attributes.code || []),
+-        // List of all allowed languages:
+-        ['className', 'hljs', 'language-js', 'language-css', 'language-md']
++      span: [
++        ...(defaultSchema.attributes.span || []),
++        // List of all allowed tokens:
++        ['className', 'hljs-addition', 'hljs-attr', 'hljs-attribute', 'hljs-built_in', 'hljs-bullet', 'hljs-char', 'hljs-code', 'hljs-comment', 'hljs-deletion', 'hljs-doctag', 'hljs-emphasis', 'hljs-formula', 'hljs-keyword', 'hljs-link', 'hljs-literal', 'hljs-meta', 'hljs-name', 'hljs-number', 'hljs-operator', 'hljs-params', 'hljs-property', 'hljs-punctuation', 'hljs-quote', 'hljs-regexp', 'hljs-section', 'hljs-selector-attr', 'hljs-selector-class', 'hljs-selector-id', 'hljs-selector-pseudo', 'hljs-selector-tag', 'hljs-string', 'hljs-strong', 'hljs-subst', 'hljs-symbol', 'hljs-tag', 'hljs-template-tag', 'hljs-template-variable', 'hljs-title', 'hljs-type', 'hljs-variable'
++        ]
+       ]
+     }
+   })
+-  .use(rehypeHighlight)
+   .use(rehypeStringify)
+   .process('<pre><code className="language-js">console.log(1)</code></pre>')
 ```
 
 ## Types
