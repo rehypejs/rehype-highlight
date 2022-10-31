@@ -322,7 +322,7 @@ Using `rehype-sanitize` before `rehype-highlight`:
 import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 import rehypeHighlight from 'rehype-highlight'
-import rehypeSanitize, {defaultSchema} from './index.js'
+import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
 const file = await unified()
