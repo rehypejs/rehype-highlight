@@ -1,147 +1,175 @@
 /**
  * @typedef {import('lowlight/lib/core.js').HighlightSyntax} HighlightSyntax
+ *   To do: expose from lowlight root?
  */
 
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {rehype} from 'rehype'
 import rehypeHighlight from './index.js'
 
-test('rehypeHighlight', (t) => {
-  t.equal(
-    rehype()
+test('rehypeHighlight', async function (t) {
+  await t.test('should work on empty code', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {detect: true})
-      .processSync(
+      .process(
         ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
       )
-      .toString(),
-    ['<h1>Hello World!</h1>', '', '<pre><code class="hljs"></code></pre>'].join(
-      '\n'
-    ),
-    'empty'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs"></code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should not highlight (no class)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code>"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
-      '\n'
-    ),
-    'should not highlight (no class)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code>"use strict";</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should highlight (`detect`, no class)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {detect: true})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code>"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (`detect`, no class)'
+
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test(
+    'should highlight (detect, no class, subset)',
+    async function () {
+      const file = await rehype()
+        .data('settings', {fragment: true})
+        .use(rehypeHighlight, {detect: true, subset: ['arduino']})
+        .process(
+          [
+            '<h1>Hello World!</h1>',
+            '',
+            '<pre><code>"use strict";</code></pre>'
+          ].join('\n')
+        )
+
+      assert.equal(
+        String(file),
+        [
+          '<h1>Hello World!</h1>',
+          '',
+          '<pre><code class="hljs language-arduino"><span class="hljs-string">"use strict"</span>;</code></pre>'
+        ].join('\n')
+      )
+    }
   )
 
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(rehypeHighlight, {detect: true, subset: ['arduino']})
-      .processSync(
+  await t.test(
+    'should not highlight (`detect: false`, no class)',
+    async function () {
+      const file = await rehype()
+        .data('settings', {fragment: true})
+        .use(rehypeHighlight, {detect: false})
+        .process(
+          [
+            '<h1>Hello World!</h1>',
+            '',
+            '<pre><code>"use strict";</code></pre>'
+          ].join('\n')
+        )
+
+      assert.equal(
+        String(file),
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code>"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-arduino"><span class="hljs-string">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (detect, no class, subset)'
+    }
   )
 
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(rehypeHighlight, {detect: false})
-      .processSync(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code>"use strict";</code></pre>'
-        ].join('\n')
-      )
-      .toString(),
-    ['<h1>Hello World!</h1>', '', '<pre><code>"use strict";</code></pre>'].join(
-      '\n'
-    ),
-    'should not highlight (`detect: false`, no class)'
-  )
-
-  t.equal(
-    rehype()
+  await t.test('should highlight (prefix without dash)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {prefix: 'foo', detect: true})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code>"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="foo language-javascript"><span class="foometa">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (prefix without dash)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="foo language-javascript"><span class="foometa">"use strict"</span>;</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should highlight (prefix with dash)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {prefix: 'foo-', detect: true})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code>"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="foo language-javascript"><span class="foo-meta">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should highlight (prefix with dash)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="foo language-javascript"><span class="foo-meta">"use strict"</span>;</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should highlight (lang class)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -149,21 +177,23 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'),
-    'should highlight (lang class)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should highlight (language class)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -171,21 +201,23 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'),
-    'should highlight (language class)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should highlight (long name)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -193,21 +225,23 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'),
-    'should highlight (long name)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-javascript"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should not highlight (`no-highlight`)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -215,21 +249,23 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="no-highlight">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'),
-    'should not highlight (`no-highlight`)'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="no-highlight">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should not highlight (`nohighlight`)', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -237,22 +273,24 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="nohighlight">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'),
-    'should not highlight (`nohighlight`)'
-  )
 
-  t.throws(
-    () => {
-      rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="nohighlight">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should throw on missing languages', async function () {
+    try {
+      await rehype()
         .data('settings', {fragment: true})
         .use(rehypeHighlight)
-        .processSync(
+        .process(
           [
             '<h1>Hello World!</h1>',
             '',
@@ -260,17 +298,20 @@ test('rehypeHighlight', (t) => {
             'console.log("Hello, " + name + "!")</code></pre>'
           ].join('\n')
         )
-        .toString()
-    },
-    /Unknown language: `foobar` is not registered/,
-    'should throw on missing languages'
-  )
+      assert.fail()
+    } catch (error) {
+      assert.match(
+        String(error),
+        /Unknown language: `foobar` is not registered/
+      )
+    }
+  })
 
-  t.equal(
-    rehype()
+  await t.test('should ignore missing languages', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {ignoreMissing: true})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -278,21 +319,35 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs lang-foobar">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'),
-    'should ignore missing languages'
-  )
 
-  t.equal(
-    rehype()
-      .data('settings', {fragment: true})
-      .use(rehypeHighlight, {plainText: ['js']})
-      .processSync(
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs lang-foobar">var name = "World";',
+        'console.log("Hello, " + name + "!")</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test(
+    'should not highlight plainText-ed languages',
+    async function () {
+      const file = await rehype()
+        .data('settings', {fragment: true})
+        .use(rehypeHighlight, {plainText: ['js']})
+        .process(
+          [
+            '<h1>Hello World!</h1>',
+            '',
+            '<pre><code class="lang-js">var name = "World";',
+            'console.log("Hello, " + name + "!")</code></pre>'
+          ].join('\n')
+        )
+
+      assert.equal(
+        String(file),
         [
           '<h1>Hello World!</h1>',
           '',
@@ -300,32 +355,27 @@ test('rehypeHighlight', (t) => {
           'console.log("Hello, " + name + "!")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="lang-js">var name = "World";',
-      'console.log("Hello, " + name + "!")</code></pre>'
-    ].join('\n'),
-    'should not highlight plainText-ed languages'
+    }
   )
 
-  // For some reason this isn’t detected as c++.
-  t.equal(
-    rehype()
+  await t.test('should not remove contents', async function () {
+    // For some reason this isn’t detected as c++.
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {subset: ['cpp'], detect: true})
-      .processSync(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
-      .toString(),
-    '<pre><code class="hljs">def add(a, b):\n  return a + b</code></pre>',
-    'should not remove contents'
-  )
+      .process(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      '<pre><code class="hljs">def add(a, b):\n  return a + b</code></pre>'
+    )
+  })
+
+  await t.test('should reprocess exact', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -333,35 +383,39 @@ test('rehypeHighlight', (t) => {
           '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'),
-    'should reprocess exact'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should parse custom language', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {
         aliases: {javascript: ['funkyscript']}
       })
-      .processSync(
+      .process(
         '<pre><code class="lang-funkyscript">console.log(1)</code></pre>'
       )
-      .toString(),
-    '<pre><code class="hljs lang-funkyscript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)</code></pre>',
-    'should parse custom language'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      '<pre><code class="hljs lang-funkyscript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)</code></pre>'
+    )
+  })
+
+  await t.test('should reprocess exact', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
@@ -369,87 +423,93 @@ test('rehypeHighlight', (t) => {
           '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-    ].join('\n'),
-    'should reprocess exact'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should ignore comments', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {detect: true})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code><!--TODO-->"use strict";</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
-    ].join('\n'),
-    'should ignore comments'
-  )
 
-  t.equal(
-    rehype()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;</code></pre>'
+      ].join('\n')
+    )
+  })
+
+  await t.test('should support `<br>` elements', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight)
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code class="language-javascript">"use strict";<br>console.log("very strict")</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;',
-      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"very strict"</span>)</code></pre>'
-    ].join('\n'),
-    'should support `<br>` elements'
-  )
 
-  /**
-   * @type {HighlightSyntax}
-   */
-  function testLang() {
-    return {
-      contains: [],
-      aliases: ['test'],
-      keywords: {keyword: 'test'}
-    }
-  }
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-javascript"><span class="hljs-meta">"use strict"</span>;',
+        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"very strict"</span>)</code></pre>'
+      ].join('\n')
+    )
+  })
 
-  t.equal(
-    rehype()
+  await t.test('should register languages', async function () {
+    const file = await rehype()
       .data('settings', {fragment: true})
       .use(rehypeHighlight, {languages: {test: testLang}})
-      .processSync(
+      .process(
         [
           '<h1>Hello World!</h1>',
           '',
           '<pre><code class="language-scss">test normal text</code></pre>'
         ].join('\n')
       )
-      .toString(),
-    [
-      '<h1>Hello World!</h1>',
-      '',
-      '<pre><code class="hljs language-scss">test <span class="hljs-attribute">normal</span> text</code></pre>'
-    ].join('\n'),
-    'should register languages'
-  )
 
-  t.end()
+    assert.equal(
+      String(file),
+      [
+        '<h1>Hello World!</h1>',
+        '',
+        '<pre><code class="hljs language-scss">test <span class="hljs-attribute">normal</span> text</code></pre>'
+      ].join('\n')
+    )
+
+    /**
+     * @type {HighlightSyntax}
+     */
+    function testLang() {
+      return {
+        contains: [],
+        aliases: ['test'],
+        keywords: {keyword: 'test'}
+      }
+    }
+  })
 })
