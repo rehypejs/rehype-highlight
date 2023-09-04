@@ -1,10 +1,10 @@
 /**
- * @typedef {import('lowlight/lib/core.js').HighlightSyntax} HighlightSyntax
- *   To do: expose from lowlight root?
+ * @typedef {import('lowlight').LanguageFn} LanguageFn
  */
 
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import {common} from 'lowlight'
 import {rehype} from 'rehype'
 import rehypeHighlight from './index.js'
 
@@ -489,7 +489,7 @@ test('rehypeHighlight', async function (t) {
   await t.test('should register languages', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {languages: {test: testLang}})
+      .use(rehypeHighlight, {languages: {...common, test: testLang}})
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -508,7 +508,7 @@ test('rehypeHighlight', async function (t) {
     )
 
     /**
-     * @type {HighlightSyntax}
+     * @type {LanguageFn}
      */
     function testLang() {
       return {
