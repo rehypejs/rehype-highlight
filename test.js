@@ -9,6 +9,12 @@ import {rehype} from 'rehype'
 import rehypeHighlight from './index.js'
 
 test('rehypeHighlight', async function (t) {
+  await t.test('should expose the public api', async function () {
+    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
+      'default'
+    ])
+  })
+
   await t.test('should work on empty code', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
@@ -124,7 +130,7 @@ test('rehypeHighlight', async function (t) {
   await t.test('should highlight (prefix without dash)', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {prefix: 'foo', detect: true})
+      .use(rehypeHighlight, {detect: true, prefix: 'foo'})
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -146,7 +152,7 @@ test('rehypeHighlight', async function (t) {
   await t.test('should highlight (prefix with dash)', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {prefix: 'foo-', detect: true})
+      .use(rehypeHighlight, {detect: true, prefix: 'foo-'})
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -302,7 +308,7 @@ test('rehypeHighlight', async function (t) {
     } catch (error) {
       assert.match(
         String(error),
-        /Unknown language: `foobar` is not registered/
+        /Cannot highlight as `foobar`, it’s not registered/
       )
     }
   })
@@ -362,7 +368,7 @@ test('rehypeHighlight', async function (t) {
     // For some reason this isn’t detected as c++.
     const file = await rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {subset: ['cpp'], detect: true})
+      .use(rehypeHighlight, {detect: true, subset: ['cpp']})
       .process(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
 
     assert.equal(
@@ -506,8 +512,8 @@ test('rehypeHighlight', async function (t) {
      */
     function testLang() {
       return {
-        contains: [],
         aliases: ['test'],
+        contains: [],
         keywords: {keyword: 'test'}
       }
     }

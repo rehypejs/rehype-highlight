@@ -175,7 +175,7 @@ languages.
 
 ###### `options.aliases`
 
-Register more aliases (`Record<string, string|Array<string>>`, default: `{}`).
+Register more aliases (`Record<string, Array<string> | string>`, default: `{}`).
 Passed to [`lowlight.registerAlias`][register-alias].
 
 ###### `options.languages`
