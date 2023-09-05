@@ -291,32 +291,10 @@ test('rehypeHighlight', async function (t) {
     )
   })
 
-  await t.test('should throw on missing languages', async function () {
-    try {
-      await rehype()
-        .data('settings', {fragment: true})
-        .use(rehypeHighlight)
-        .process(
-          [
-            '<h1>Hello World!</h1>',
-            '',
-            '<pre><code class="lang-foobar">var name = "World";',
-            'console.log("Hello, " + name + "!")</code></pre>'
-          ].join('\n')
-        )
-      assert.fail()
-    } catch (error) {
-      assert.match(
-        String(error),
-        /Cannot highlight as `foobar`, it’s not registered/
-      )
-    }
-  })
-
-  await t.test('should ignore missing languages', async function () {
+  await t.test('should warn on missing languages', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
-      .use(rehypeHighlight, {ignoreMissing: true})
+      .use(rehypeHighlight)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -326,15 +304,9 @@ test('rehypeHighlight', async function (t) {
         ].join('\n')
       )
 
-    assert.equal(
-      String(file),
-      [
-        '<h1>Hello World!</h1>',
-        '',
-        '<pre><code class="hljs lang-foobar">var name = "World";',
-        'console.log("Hello, " + name + "!")</code></pre>'
-      ].join('\n')
-    )
+    assert.deepEqual(file.messages.map(String), [
+      '3:6-4:43: Cannot highlight as `foobar`, it’s not registered'
+    ])
   })
 
   await t.test(

@@ -468,8 +468,6 @@ abide by its terms.
 
 [register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
 
-[register-language]: https://github.com/wooorm/lowlight#lowregisterlanguagename-syntax
-
 [highlight-js]: https://github.com/isagalaev/highlight.js
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
