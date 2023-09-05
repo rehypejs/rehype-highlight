@@ -6,11 +6,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {common} from 'lowlight'
 import {rehype} from 'rehype'
-import rehypeHighlight from './index.js'
+import rehypeHighlight from 'rehype-highlight'
 
 test('rehypeHighlight', async function (t) {
   await t.test('should expose the public api', async function () {
-    assert.deepEqual(Object.keys(await import('./index.js')).sort(), [
+    assert.deepEqual(Object.keys(await import('rehype-highlight')).sort(), [
       'default'
     ])
   })
