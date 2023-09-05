@@ -86,14 +86,14 @@ npm install rehype-highlight
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import rehypeHighlight from 'https://esm.sh/rehype-highlight@5'
+import rehypeHighlight from 'https://esm.sh/rehype-highlight@66'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import rehypeHighlight from 'https://esm.sh/rehype-highlight@5?bundle'
+  import rehypeHighlight from 'https://esm.sh/rehype-highlight@6?bundle'
 </script>
 ```
 
