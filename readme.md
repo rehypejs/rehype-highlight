@@ -9,7 +9,7 @@
 [![Chat][chat-badge]][chat]
 
 **[rehype][]** plugin to apply syntax highlighting to code with
-[`highlight.js`][highlight-js] (through [`lowlight`][lowlight]).
+[`lowlight`][lowlight].
 
 ## Contents
 
@@ -19,6 +19,7 @@
 *   [Use](#use)
 *   [API](#api)
     *   [`unified().use(rehypeHighlight[, options])`](#unifieduserehypehighlight-options)
+    *   [`Options`](#options)
 *   [Example](#example)
     *   [Example: ignoring](#example-ignoring)
     *   [Example: registering](#example-registering)
@@ -33,12 +34,12 @@
 
 ## What is this?
 
-This package is a [unified][] ([rehype][]) plugin to apply syntax highlighting
-to code with `highlight.js`.
-`highlight.js` is pretty fast, relatively small, and a quite good syntax
-highlighter which has support for up to 190 different languages.
-This package bundles 35 [common languages][common] by default and you can
-register more.
+This package is a [unified][] ([rehype][]) plugin to perform syntax
+highlighting.
+It uses `highlight.js` through `lowlight`, which is pretty fast, relatively
+small, and quite good.
+This package bundles 37 [common languages][lowlight-common] by default and you
+can register more (190 with [`all`][lowlight-all]).
 
 It looks for `<code>` elements (when directly in `<pre>` elements) and changes
 them.
@@ -48,8 +49,8 @@ You can specify the code language (such as Python) with a `language-*` or
 By default, code without such a language class is not highlighted.
 Pass `detect: true` to detect their programming language and highlight the code
 anyway.
-You can still prevent specific blocks from being highlighted with a
-`no-highlight` or `nohighlight` class on the `<code>`.
+You can prevent specific blocks from being highlighted with a `no-highlight` or
+`nohighlight` class on the `<code>`.
 
 **unified** is a project that transforms content with abstract syntax trees
 (ASTs).
@@ -59,7 +60,7 @@ This is a rehype plugin that applies syntax highlighting to the AST.
 
 ## When should I use this?
 
-This project is useful when you want to apply syntax highlighting in rehype.
+This project is useful when you want to perform syntax highlighting in rehype.
 One reason to do that is that it typically means the highlighting happens once
 at build time instead of every time at run time.
 
@@ -75,8 +76,8 @@ differently.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm][]:
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install rehype-highlight
@@ -107,12 +108,12 @@ Say we have the following file `example.html`:
 console.warn("Hello, " + name + "!")</code></pre>
 ```
 
-And our module `example.js` looks as follows:
+…and our module `example.js` contains:
 
 ```js
-import {read} from 'to-vfile'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
+import {read} from 'to-vfile'
 
 const file = await rehype()
   .data('settings', {fragment: true})
@@ -122,66 +123,56 @@ const file = await rehype()
 console.log(String(file))
 ```
 
-Now running `node example.js` yields:
+…then running `node example.js` yields:
 
 ```html
 <h1>Hello World!</h1>
 
 <pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;
-<span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">warn</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>
 ```
 
 ## API
 
 This package exports no identifiers.
-The default export is `rehypeHighlight`.
+The default export is [`rehypeHighlight`][api-rehype-highlight].
 
 ### `unified().use(rehypeHighlight[, options])`
 
-Apply syntax highlighting to code with `highlight.js`.
+Apply syntax highlighting.
 
-##### `options`
+###### Parameters
 
-Configuration (optional).
+*   `options` ([`Options`][api-options], optional)
+    — configuration
 
-###### `options.prefix`
+###### Returns
 
-Prefix to use before classes (`string`, default: `'hljs-'`).
+Transform ([`Transformer`][unified-transformer]).
 
-###### `options.detect`
+### `Options`
 
-Whether to detect the programming language on code without a language class
-(`boolean`, default: `false`).
+Configuration (TypeScript type).
 
-###### `options.subset`
+###### Fields
 
-Languages to check when automatically detecting (`Array<string>`, default: all
-languages).
-
-###### `options.plainText`
-
-List of plain-text languages (`Array<string>`, default: `[]`).
-Pass any languages you would like to be kept as plain-text instead of getting
-highlighted.
-This is like setting a `no-highlight` class assuming `txt` was listed, then
-`language-txt` would be treated as such too.
-
-###### `options.ignoreMissing`
-
-Swallow errors for missing languages (`boolean`, default: `false`).
-By default, unregistered syntaxes throw an error when they are used.
-Pass `true` to swallow those errors and thus ignore code with unknown code
-languages.
-
-###### `options.aliases`
-
-Register more aliases (`Record<string, Array<string> | string>`, default: `{}`).
-Passed to [`lowlight.registerAlias`][register-alias].
-
-###### `options.languages`
-
-Register languages (`Record<string, Function>`, default: [`common`][common]).
-Passed to `createLowlight`.
+*   `aliases` (`Record<string, Array<string> | string>`, optional)
+    — register more aliases;
+    passed to [`lowlight.registerAlias`][lowlight-register-alias]
+*   `detect` (`boolean`, default: `false`)
+    — highlight code without language classes by guessing its programming
+    language
+*   `languages` (`Record<string, LanguageFn>`, default:
+    [`common`][lowlight-common])
+    — register languages; passed to [`lowlight.register`][lowlight-register]
+*   `plainText` (`Array<string>`, optional)
+    — list of language names to not highlight;
+    note you can also add `no-highlight` classes
+*   `prefix` (`string`, default: `'hljs-'`)
+    — class prefix
+*   `subset` (`Array<string>`, default: default: [all][lowlight-all] registered
+    languages)
+    — names of languages to check when detecting
 
 ## Example
 
@@ -203,12 +194,12 @@ For example, with `example.html`:
 <pre><code class="language-txt">this won’t be highlighted due to `plainText: ['txt']`</code></pre>
 ```
 
-And `example.js`:
+…and `example.js`:
 
 ```js
-import {read} from 'to-vfile'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
+import {read} from 'to-vfile'
 
 const file = await rehype()
   .data('settings', {fragment: true})
@@ -218,14 +209,15 @@ const file = await rehype()
 console.log(String(file))
 ```
 
-Running that yields the same as `example.html`: none of them are highlighted.
+…then running that yields the same as `example.html`: none of them are
+highlighted.
 
 ### Example: registering
 
-`rehype-highlight` supports 35 common used languages by default.
-This makes it small to load in browsers and Node.js, while supporting most cases
-by default.
-It’s possible to add support for more languages.
+`rehype-highlight` supports 37 commonly used languages by default.
+This makes it small to load in browsers and Node.js, while supporting enough
+default cases.
+You can add more languages.
 
 For example, with `example.html`:
 
@@ -233,27 +225,24 @@ For example, with `example.html`:
 <pre><code class="language-bnf">a ::= 'a' | 'A'</code></pre>
 ```
 
-And `example.js`:
+…and `example.js`:
 
 ```js
-import {read} from 'to-vfile'
+import bnf from 'highlight.js/lib/languages/bnf'
+import {common} from 'lowlight'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
-import bnf from 'highlight.js/lib/languages/bnf'
+import {read} from 'to-vfile'
 
-main()
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeHighlight, {languages: {...common, bnf}})
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await rehype()
-    .data('settings', {fragment: true})
-    .use(rehypeHighlight, {languages: {bnf}})
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
-Running that yields:
+…then running that yields:
 
 ```html
 <pre><code class="hljs language-bnf">a ::= <span class="hljs-string">'a'</span> | <span class="hljs-string">'A'</span></code></pre>
@@ -269,74 +258,50 @@ For example, with `example.html`:
 <pre><code class="language-custom-script">console.log(1)</code></pre>
 ```
 
-And `example.js`:
+…and `example.js`:
 
 ```js
-import {read} from 'to-vfile'
 import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
+import {read} from 'to-vfile'
 
-main()
+const file = await rehype()
+  .data('settings', {fragment: true})
+  // 👉 **Note**: the keys are language names, values are the aliases that you
+  // want to also allow as `x` in `language-x` classes.
+  .use(rehypeHighlight, {aliases: {'javascript': 'custom-script'}})
+  .process(await read('example.html'))
 
-async function main() {
-  const file = await rehype()
-    .data('settings', {fragment: true})
-    // 👉 **Note**: the keys are registered and full highlight.js names, and
-    // the values are the flags that you want to allow as `x` in `language-x`
-    // classes.
-    .use(rehypeHighlight, {aliases: {'javascript': 'custom-script'}})
-    .process(await read('example.html'))
-
-  console.log(String(file))
-}
+console.log(String(file))
 ```
 
-Running that yields:
+…then running that yields:
 
 ```html
-<pre><code class="hljs language-custom-script"><span class="hljs-variable hljs-language">console</span>.<span class="hljs-title hljs-function">log</span>(<span class="hljs-number">1</span>)</code></pre>
+<pre><code class="hljs language-custom-script"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)</code></pre>
 ```
 
 ### Example: sanitation
 
 Applying syntax highlighting in rehype operates on `<code>` elements with
 certain classes and it injects many `<span>` elements with classes.
-Allowing arbitrary classes is an opening for XSS vulnerabilities.
+Allowing arbitrary classes is an opening for security vulnerabilities.
 
-Working with user input and HTML generally opens you up to XSS vulnerabilities,
-so it’s recommend to use sanitation mechanisms, typically
-[`rehype-sanitize`][rehype-sanitize].
-Because arbitrary classes are one such opening that `rehype-sanitize` takes care
-off, using `rehype-highlight` with `rehype-sanitize` requires some configuration
-to make it work.
-
-There are two ways to make it work.
-Either by using `rehype-sanitize` first while allowing the classes on `<code>`
-and then using `rehype-highlight`, or alternatively first using
-`rehype-highlight` and then using `rehype-sanitize` while allowing the classes
-on `<span>` elements.
-Using `rehype-sanitize` before `rehype-highlight`:
+To make HTML safe in rehype, use [`rehype-sanitize`][rehype-sanitize].
+It specifically allows `/^language-./` class names on `<code>` elements.
+Which we also use.
+So you can use `rehype-highlight` after `rehype-sanitize`:
 
 ```js
 import {unified} from 'unified'
+import rehypeHighlight from './index.js'
 import rehypeParse from 'rehype-parse'
-import rehypeHighlight from 'rehype-highlight'
 import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
 import rehypeStringify from 'rehype-stringify'
 
 const file = await unified()
   .use(rehypeParse, {fragment: true})
-  .use(rehypeSanitize, {
-    ...defaultSchema,
-    attributes: {
-      ...defaultSchema.attributes,
-      code: [
-        ...(defaultSchema.attributes.code || []),
-        // List of all allowed languages:
-        ['className', 'language-js', 'language-css', 'language-md']
-      ]
-    }
-  })
+  .use(rehypeSanitize)
   .use(rehypeHighlight)
   .use(rehypeStringify)
   .process('<pre><code className="language-js">console.log(1)</code></pre>')
@@ -344,45 +309,61 @@ const file = await unified()
 console.log(String(file))
 ```
 
-Using `rehype-highlight` before `rehype-sanitize`:
+…yields:
 
-```diff
- const file = await unified()
-   .use(rehypeParse, {fragment: true})
-+  .use(rehypeHighlight)
-   .use(rehypeSanitize, {
-     ...defaultSchema,
-     attributes: {
-       ...defaultSchema.attributes,
--      code: [
--        ...(defaultSchema.attributes.code || []),
--        // List of all allowed languages:
--        ['className', 'hljs', 'language-js', 'language-css', 'language-md']
-+      span: [
-+        ...(defaultSchema.attributes.span || []),
-+        // List of all allowed tokens:
-+        ['className', 'hljs-addition', 'hljs-attr', 'hljs-attribute', 'hljs-built_in', 'hljs-bullet', 'hljs-char', 'hljs-code', 'hljs-comment', 'hljs-deletion', 'hljs-doctag', 'hljs-emphasis', 'hljs-formula', 'hljs-keyword', 'hljs-link', 'hljs-literal', 'hljs-meta', 'hljs-name', 'hljs-number', 'hljs-operator', 'hljs-params', 'hljs-property', 'hljs-punctuation', 'hljs-quote', 'hljs-regexp', 'hljs-section', 'hljs-selector-attr', 'hljs-selector-class', 'hljs-selector-id', 'hljs-selector-pseudo', 'hljs-selector-tag', 'hljs-string', 'hljs-strong', 'hljs-subst', 'hljs-symbol', 'hljs-tag', 'hljs-template-tag', 'hljs-template-variable', 'hljs-title', 'hljs-type', 'hljs-variable'
-+        ]
-       ]
-     }
-   })
--  .use(rehypeHighlight)
-   .use(rehypeStringify)
-   .process('<pre><code className="language-js">console.log(1)</code></pre>')
+```html
+<pre><code class="hljs language-js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">1</span>)</code></pre>
+```
+
+Using plugins *after* `rehype-sanitize`, like we just did, is *safe* assuming
+you trust those plugins.
+If you do not trust `rehype-highlight`, you can use it before.
+But then you need to configure `rehype-sanitize` to keep the classes you allow:
+
+```js
+import {unified} from 'unified'
+import rehypeHighlight from './index.js'
+import rehypeParse from 'rehype-parse'
+import rehypeSanitize, {defaultSchema} from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(rehypeHighlight)
+  .use(rehypeSanitize, {
+    ...defaultSchema,
+    attributes: {
+      ...defaultSchema.attributes,
+      span: [
+        ...(defaultSchema.attributes?.span || []),
+        // Allow all class names starting with `hljs-`.
+        ['className', /^hljs-./]
+        // Alternatively, to allow only certain class names:
+        // ['className', 'hljs-number', 'hljs-title', 'hljs-variable']
+      ]
+    },
+    tagNames: [...(defaultSchema.tagNames || []), 'span']
+  })
+  .use(rehypeStringify)
+  .process('<pre><code className="language-js">console.log(1)</code></pre>')
+
+console.log(String(file))
 ```
 
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports an `Options` type, which specifies the interface of the accepted
-options.
+It exports the additional type [`Options`][api-options].
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
+Projects maintained by the unified collective are compatible with maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+
+When we cut a new major release, we drop support for unmaintained versions of
+Node.
+This means we try to keep the current release line, `rehype-highlight@^6`,
+compatible with Node.js 12.
 
 This plugin works with `rehype-parse` version 1+, `rehype-stringify` version 1+,
 `rehype` version 1+, and `unified` version 4+.
@@ -428,9 +409,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/rehype-highlight
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/rehype-highlight.svg
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-highlight
 
-[size]: https://bundlephobia.com/result?p=rehype-highlight
+[size]: https://bundlejs.com/?q=rehype-highlight
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -443,6 +424,8 @@ abide by its terms.
 [chat]: https://github.com/rehypejs/rehype/discussions
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
@@ -458,18 +441,26 @@ abide by its terms.
 
 [author]: https://wooorm.com
 
+[lowlight]: https://github.com/wooorm/lowlight
+
+[lowlight-all]: https://github.com/wooorm/lowlight#all
+
+[lowlight-common]: https://github.com/wooorm/lowlight#common
+
+[lowlight-register]: https://github.com/wooorm/lowlight#lowlightregistergrammars
+
+[lowlight-register-alias]: https://github.com/wooorm/lowlight#lowlightregisteraliasaliases
+
+[rehype]: https://github.com/rehypejs/rehype
+
+[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
 [typescript]: https://www.typescriptlang.org
 
 [unified]: https://github.com/unifiedjs/unified
 
-[rehype]: https://github.com/rehypejs/rehype
+[unified-transformer]: https://github.com/unifiedjs/unified#transformer
 
-[lowlight]: https://github.com/wooorm/lowlight
+[api-options]: #options
 
-[register-alias]: https://github.com/wooorm/lowlight#lowregisteraliasname-alias
-
-[highlight-js]: https://github.com/isagalaev/highlight.js
-
-[rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
-
-[common]: https://github.com/wooorm/lowlight#syntaxes
+[api-rehype-highlight]: #unifieduserehypehighlight-options
