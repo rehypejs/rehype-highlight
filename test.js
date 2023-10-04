@@ -267,6 +267,23 @@ test('rehypeHighlight', async function (t) {
     )
   })
 
+  await t.test(
+    'should prefer `no-highlight` over a `language-*` class',
+    async function () {
+      const file = await rehype()
+        .data('settings', {fragment: true})
+        .use(rehypeHighlight)
+        .process(
+          '<h1>Hello World!</h1>\n<pre><code class="lang-js no-highlight">alert(1)</code></pre>'
+        )
+
+      assert.equal(
+        String(file),
+        '<h1>Hello World!</h1>\n<pre><code class="lang-js no-highlight">alert(1)</code></pre>'
+      )
+    }
+  )
+
   await t.test('should not highlight (`nohighlight`)', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
