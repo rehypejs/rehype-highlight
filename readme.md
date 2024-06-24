@@ -26,6 +26,7 @@
     *   [Example: aliases](#example-aliases)
     *   [Example: sanitation](#example-sanitation)
 *   [Types](#types)
+*   [Line Numbering and Line Highlighting](#line-numbering-and-line-highlighting)
 *   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Related](#related)
@@ -350,6 +351,60 @@ const file = await unified()
 console.log(String(file))
 ```
 
+## Line Numbering and Line Highlighting
+
+You can add line numbering and line highlighting to code blocks via **`rehype-highlight-code-lines`** which is a separate `rehype plugin`.
+
+For more explanation see the package on [npm](https://www.npmjs.com/package/rehype-highlight-code-lines) or on [github](https://github.com/ipikuka/rehype-highlight-code-lines).
+
+### Example: line numbering and line highlighting
+
+You need to use **`rehype-highlight-code-lines`** after **`rehype-highlight`**, the order matters.
+
+Say we have the following file `example.html`:
+
+```html
+<h1>Hello World!</h1>
+
+<pre><code class="language-js">var name = "World";
+console.warn("Hello, " + name + "!")</code></pre>
+```
+
+…and our module `example.js` contains:
+
+```js
+import {rehype} from 'rehype'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeHighlightCodeLines from 'rehype-highlight-code-lines'
+import {read} from 'to-vfile'
+
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeHighlight)
+  .use(rehypeHighlightCodeLines, {
+    showLineNumbers: true,
+    lineContainerTagName: "div",
+  })
+  .process(await read('example.html'))
+
+console.log(String(file))
+```
+
+…then running `node example.js` yields:
+
+```html
+<h1>Hello World!</h1>
+
+<pre><code class="hljs language-js">
+  <div class="code-line numbered-code-line" data-line-number="1">
+    <span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;
+  </div>
+  <div class="code-line numbered-code-line" data-line-number="2">
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">warn</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)
+  </div>
+</code></pre>
+```
+
 ## Types
 
 This package is fully typed with [TypeScript][].
@@ -380,6 +435,8 @@ When in doubt, use [`rehype-sanitize`][rehype-sanitize].
     — add metadata to the head of a document
 *   [`rehype-document`](https://github.com/rehypejs/rehype-document)
     — wrap a fragment in a document
+*   [`rehype-highlight-code-lines`](https://github.com/ipikuka/rehype-highlight-code-lines)
+    — allow line numbering to code blocks and highlighting of desired code lines
 
 ## Contribute
 
