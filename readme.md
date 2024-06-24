@@ -25,8 +25,8 @@
     *   [Example: registering](#example-registering)
     *   [Example: aliases](#example-aliases)
     *   [Example: sanitation](#example-sanitation)
-*   [Types](#types)
 *   [Line Numbering and Line Highlighting](#line-numbering-and-line-highlighting)
+*   [Types](#types)
 *   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Related](#related)
@@ -353,13 +353,17 @@ console.log(String(file))
 
 ## Line Numbering and Line Highlighting
 
-You can add line numbering and line highlighting to code blocks via **`rehype-highlight-code-lines`** which is a separate `rehype plugin`.
+You can add line numbering and line highlighting to code blocks 
+via **`rehype-highlight-code-lines`** which is a separate `rehype plugin`.
 
-For more explanation see the package on [npm](https://www.npmjs.com/package/rehype-highlight-code-lines) or on [github](https://github.com/ipikuka/rehype-highlight-code-lines).
+For more explanation see the package on 
+[npm](https://www.npmjs.com/package/rehype-highlight-code-lines) or on 
+[github](https://github.com/ipikuka/rehype-highlight-code-lines).
 
 ### Example: line numbering and line highlighting
 
-You need to use **`rehype-highlight-code-lines`** after **`rehype-highlight`**, the order matters.
+You need to use **`rehype-highlight-code-lines`** after **`rehype-highlight`**,
+the order matters.
 
 Say we have the following file `example.html`:
 
@@ -436,7 +440,7 @@ When in doubt, use [`rehype-sanitize`][rehype-sanitize].
 *   [`rehype-document`](https://github.com/rehypejs/rehype-document)
     — wrap a fragment in a document
 *   [`rehype-highlight-code-lines`](https://github.com/ipikuka/rehype-highlight-code-lines)
-    — allow line numbering to code blocks and highlighting of desired code lines
+    — allow line numbering to code blocks and highlighting of desired lines
 
 ## Contribute
 
