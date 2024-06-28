@@ -1,5 +1,5 @@
 /**
- * @typedef {import('lowlight').LanguageFn} LanguageFn
+ * @import {LanguageFn} from 'lowlight'
  */
 
 import assert from 'node:assert/strict'
