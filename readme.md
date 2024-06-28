@@ -13,24 +13,24 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`unified().use(rehypeHighlight[, options])`](#unifieduserehypehighlight-options)
-    *   [`Options`](#options)
-*   [Example](#example)
-    *   [Example: ignoring](#example-ignoring)
-    *   [Example: registering](#example-registering)
-    *   [Example: aliases](#example-aliases)
-    *   [Example: sanitation](#example-sanitation)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`unified().use(rehypeHighlight[, options])`](#unifieduserehypehighlight-options)
+  * [`Options`](#options)
+* [Example](#example)
+  * [Example: ignoring](#example-ignoring)
+  * [Example: registering](#example-registering)
+  * [Example: aliases](#example-aliases)
+  * [Example: sanitation](#example-sanitation)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -143,8 +143,8 @@ Apply syntax highlighting.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -156,23 +156,23 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `aliases` (`Record<string, Array<string> | string>`, optional)
-    — register more aliases;
-    passed to [`lowlight.registerAlias`][lowlight-register-alias]
-*   `detect` (`boolean`, default: `false`)
-    — highlight code without language classes by guessing its programming
-    language
-*   `languages` (`Record<string, LanguageFn>`, default:
-    [`common`][lowlight-common])
-    — register languages; passed to [`lowlight.register`][lowlight-register]
-*   `plainText` (`Array<string>`, optional)
-    — list of language names to not highlight;
-    note you can also add `no-highlight` classes
-*   `prefix` (`string`, default: `'hljs-'`)
-    — class prefix
-*   `subset` (`Array<string>`, default: default: [all][lowlight-all] registered
-    languages)
-    — names of languages to check when detecting
+* `aliases` (`Record<string, Array<string> | string>`, optional)
+  — register more aliases;
+  passed to [`lowlight.registerAlias`][lowlight-register-alias]
+* `detect` (`boolean`, default: `false`)
+  — highlight code without language classes by guessing its programming
+  language
+* `languages` (`Record<string, LanguageFn>`, default:
+  [`common`][lowlight-common])
+  — register languages; passed to [`lowlight.register`][lowlight-register]
+* `plainText` (`Array<string>`, optional)
+  — list of language names to not highlight;
+  note you can also add `no-highlight` classes
+* `prefix` (`string`, default: `'hljs-'`)
+  — class prefix
+* `subset` (`Array<string>`, default: default: [all][lowlight-all] registered
+  languages)
+  — names of languages to check when detecting
 
 ## Example
 
@@ -376,10 +376,10 @@ When in doubt, use [`rehype-sanitize`][rehype-sanitize].
 
 ## Related
 
-*   [`rehype-meta`](https://github.com/rehypejs/rehype-meta)
-    — add metadata to the head of a document
-*   [`rehype-document`](https://github.com/rehypejs/rehype-document)
-    — wrap a fragment in a document
+* [`rehype-meta`](https://github.com/rehypejs/rehype-meta)
+  — add metadata to the head of a document
+* [`rehype-document`](https://github.com/rehypejs/rehype-document)
+  — wrap a fragment in a document
 
 ## Contribute
 
