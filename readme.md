@@ -64,10 +64,9 @@ This project is useful when you want to perform syntax highlighting in rehype.
 One reason to do that is that it typically means the highlighting happens once
 at build time instead of every time at run time.
 
-There are several other community plugins that apply syntax highlighting.
-Some of them are great choices but some are broken.
-As anyone can make rehype plugins, make sure to carefully assess the quality of
-rehype plugins.
+When you want a high quality highlighter that can support tons of grammars and
+approaches how GitHub renders code,
+you can use [`rehype-starry-night`][rehype-starry-night].
 
 This plugin is built on [`lowlight`][lowlight], which is a virtual version of
 highlight.js.
@@ -376,6 +375,8 @@ When in doubt, use [`rehype-sanitize`][rehype-sanitize].
 
 ## Related
 
+* [`rehype-starry-night`][rehype-starry-night]
+  — apply syntax highlighting with `starry-night`
 * [`rehype-meta`](https://github.com/rehypejs/rehype-meta)
   — add metadata to the head of a document
 * [`rehype-document`](https://github.com/rehypejs/rehype-document)
@@ -454,6 +455,8 @@ abide by its terms.
 [rehype]: https://github.com/rehypejs/rehype
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
 
 [typescript]: https://www.typescriptlang.org
 
