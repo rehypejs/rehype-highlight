@@ -25,6 +25,7 @@
   * [Example: registering](#example-registering)
   * [Example: aliases](#example-aliases)
   * [Example: sanitation](#example-sanitation)
+  * [Example: line numbering and highlighting](#example-line-numbering-and-highlighting)
 * [Types](#types)
 * [Compatibility](#compatibility)
 * [Security](#security)
@@ -349,6 +350,43 @@ const file = await unified()
 console.log(String(file))
 ```
 
+### Example: line numbering and highlighting
+
+You can add support for line numbers and line highlighting with a separate
+plugin, [`rehype-highlight-code-lines`][rehype-highlight-code-lines].
+
+For example, with `example.html`:
+
+```html
+<pre><code class="language-js">console.log("Hi!")</code></pre>
+```
+
+…and `example.js`:
+
+```js
+import {rehype} from 'rehype'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeHighlightCodeLines from 'rehype-highlight-code-lines'
+import {read} from 'to-vfile'
+
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeHighlight)
+  .use(rehypeHighlightCodeLines, {
+    showLineNumbers: true,
+    lineContainerTagName: 'div'
+  })
+  .process(await read('example.html'))
+
+console.log(String(file))
+```
+
+…then running that yields:
+
+```html
+<pre><code class="hljs language-js"><div class="code-line numbered-code-line" data-line-number="1"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hi!"</span>)</div></code></pre>
+```
+
 ## Types
 
 This package is fully typed with [TypeScript][].
@@ -381,6 +419,8 @@ When in doubt, use [`rehype-sanitize`][rehype-sanitize].
   — add metadata to the head of a document
 * [`rehype-document`](https://github.com/rehypejs/rehype-document)
   — wrap a fragment in a document
+* [`rehype-highlight-code-lines`][rehype-highlight-code-lines]
+  — add line numbers and highlight lines
 
 ## Contribute
 
@@ -457,6 +497,8 @@ abide by its terms.
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
 [rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
+
+[rehype-highlight-code-lines]: https://github.com/ipikuka/rehype-highlight-code-lines
 
 [typescript]: https://www.typescriptlang.org
 
