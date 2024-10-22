@@ -27,6 +27,8 @@
   * [Example: sanitation](#example-sanitation)
   * [Example: line numbering and highlighting](#example-line-numbering-and-highlighting)
 * [Types](#types)
+* [HTML](#html)
+* [CSS](#css)
 * [Compatibility](#compatibility)
 * [Security](#security)
 * [Related](#related)
@@ -392,6 +394,19 @@ console.log(String(file))
 This package is fully typed with [TypeScript][].
 It exports the additional type [`Options`][api-options].
 
+## HTML
+
+On the input side,
+this plugin looks for code blocks with a `language-*` class.
+
+On the output side,
+this plugin generates `span` elements with classes that can be enhanced with
+CSS.
+
+## CSS
+
+See [“CSS” in `lowlight`][github-lowlight-css] for more info.
+
 ## Compatibility
 
 Projects maintained by the unified collective are compatible with maintained
@@ -481,6 +496,8 @@ abide by its terms.
 [license]: license
 
 [author]: https://wooorm.com
+
+[github-lowlight-css]: https://github.com/wooorm/lowlight#css
 
 [lowlight]: https://github.com/wooorm/lowlight
 
