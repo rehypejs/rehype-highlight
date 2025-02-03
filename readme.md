@@ -113,14 +113,19 @@ console.warn("Hello, " + name + "!")</code></pre>
 …and our module `example.js` contains:
 
 ```js
-import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
 import {read} from 'to-vfile'
+import {unified} from 'unified'
 
-const file = await rehype()
-  .data('settings', {fragment: true})
+const file = await read('example.html')
+
+await unified()
+  .use(rehypeParse, {fragment: true})
   .use(rehypeHighlight)
-  .process(await read('example.html'))
+  .use(rehypeStringify)
+  .process(file)
 
 console.log(String(file))
 ```
