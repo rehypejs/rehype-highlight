@@ -366,6 +366,20 @@ test('rehypeHighlight', async function (t) {
     )
   })
 
+  await t.test('should support multiple `code`s in a `pre`', async function () {
+    const file = await rehype()
+      .data('settings', {fragment: true})
+      .use(rehypeHighlight).process(`<pre>
+  <code class="language-javascript">const a = 1;</code>
+  <code class="language-python">printf("x")</code>
+</pre>`)
+
+    assert.equal(
+      String(file),
+      '<pre>  <code class="hljs language-javascript"><span class="hljs-keyword">const</span> a = <span class="hljs-number">1</span>;</code>\n  <code class="hljs language-python">printf(<span class="hljs-string">"x"</span>)</code>\n</pre>'
+    )
+  })
+
   await t.test('should reprocess exact', async function () {
     const file = await rehype()
       .data('settings', {fragment: true})
