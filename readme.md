@@ -453,51 +453,45 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/rehypejs/rehype-highlight/workflows/main/badge.svg
+[api-options]: #options
 
-[build]: https://github.com/rehypejs/rehype-highlight/actions
+[api-rehype-highlight]: #unifieduserehypehighlight-options
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/rehypejs/rehype-highlight.svg
-
-[coverage]: https://codecov.io/github/rehypejs/rehype-highlight
-
-[downloads-badge]: https://img.shields.io/npm/dm/rehype-highlight.svg
-
-[downloads]: https://www.npmjs.com/package/rehype-highlight
-
-[size-badge]: https://img.shields.io/bundlejs/size/rehype-highlight
-
-[size]: https://bundlejs.com/?q=rehype-highlight
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://wooorm.com
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[collective]: https://opencollective.com/unified
+[build]: https://github.com/rehypejs/rehype-highlight/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/rehypejs/rehype-highlight/workflows/main/badge.svg
 
 [chat]: https://github.com/rehypejs/rehype/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/rehypejs/.github/blob/HEAD/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/rehypejs/.github/blob/HEAD/contributing.md
+
+[coverage]: https://codecov.io/github/rehypejs/rehype-highlight
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/rehypejs/rehype-highlight.svg
+
+[downloads]: https://www.npmjs.com/package/rehype-highlight
+
+[downloads-badge]: https://img.shields.io/npm/dm/rehype-highlight.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
+[github-lowlight-css]: https://github.com/wooorm/lowlight#css
+
 [health]: https://github.com/rehypejs/.github
 
-[contributing]: https://github.com/rehypejs/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/rehypejs/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/rehypejs/.github/blob/HEAD/code-of-conduct.md
-
 [license]: license
-
-[author]: https://wooorm.com
-
-[github-lowlight-css]: https://github.com/wooorm/lowlight#css
 
 [lowlight]: https://github.com/wooorm/lowlight
 
@@ -509,20 +503,26 @@ abide by its terms.
 
 [lowlight-register-alias]: https://github.com/wooorm/lowlight#lowlightregisteraliasaliases
 
+[npm]: https://docs.npmjs.com/cli/install
+
 [rehype]: https://github.com/rehypejs/rehype
+
+[rehype-highlight-code-lines]: https://github.com/ipikuka/rehype-highlight-code-lines
 
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
 
 [rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
 
-[rehype-highlight-code-lines]: https://github.com/ipikuka/rehype-highlight-code-lines
+[size]: https://bundlejs.com/?q=rehype-highlight
+
+[size-badge]: https://img.shields.io/bundlejs/size/rehype-highlight
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/rehypejs/.github/blob/HEAD/support.md
 
 [typescript]: https://www.typescriptlang.org
 
 [unified]: https://github.com/unifiedjs/unified
 
 [unified-transformer]: https://github.com/unifiedjs/unified#transformer
-
-[api-options]: #options
-
-[api-rehype-highlight]: #unifieduserehypehighlight-options
