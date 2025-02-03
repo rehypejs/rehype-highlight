@@ -5,8 +5,10 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {common} from 'lowlight'
-import {rehype} from 'rehype'
 import rehypeHighlight from 'rehype-highlight'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 
 test('rehypeHighlight', async function (t) {
   await t.test('should expose the public api', async function () {
@@ -16,9 +18,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should work on empty code', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true})
+      .use(rehypeStringify)
       .process(
         ['<h1>Hello World!</h1>', '', '<pre><code></code></pre>'].join('\n')
       )
@@ -34,9 +37,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should not highlight (no class)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -56,9 +60,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should highlight (`detect`, no class)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true})
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -80,9 +85,10 @@ test('rehypeHighlight', async function (t) {
   await t.test(
     'should highlight (detect, no class, subset)',
     async function () {
-      const file = await rehype()
-        .data('settings', {fragment: true})
+      const file = await unified()
+        .use(rehypeParse, {fragment: true})
         .use(rehypeHighlight, {detect: true, subset: ['arduino']})
+        .use(rehypeStringify)
         .process(
           [
             '<h1>Hello World!</h1>',
@@ -105,9 +111,10 @@ test('rehypeHighlight', async function (t) {
   await t.test(
     'should not highlight (`detect: false`, no class)',
     async function () {
-      const file = await rehype()
-        .data('settings', {fragment: true})
+      const file = await unified()
+        .use(rehypeParse, {fragment: true})
         .use(rehypeHighlight, {detect: false})
+        .use(rehypeStringify)
         .process(
           [
             '<h1>Hello World!</h1>',
@@ -128,9 +135,10 @@ test('rehypeHighlight', async function (t) {
   )
 
   await t.test('should highlight (prefix without dash)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true, prefix: 'foo'})
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -150,9 +158,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should highlight (prefix with dash)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true, prefix: 'foo-'})
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -172,9 +181,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should highlight (lang class)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -196,9 +206,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should highlight (language class)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -220,9 +231,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should highlight (long name)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -244,9 +256,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should not highlight (`no-highlight`)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -270,9 +283,10 @@ test('rehypeHighlight', async function (t) {
   await t.test(
     'should prefer `no-highlight` over a `language-*` class',
     async function () {
-      const file = await rehype()
-        .data('settings', {fragment: true})
+      const file = await unified()
+        .use(rehypeParse, {fragment: true})
         .use(rehypeHighlight)
+        .use(rehypeStringify)
         .process(
           '<h1>Hello World!</h1>\n<pre><code class="lang-js no-highlight">alert(1)</code></pre>'
         )
@@ -285,9 +299,10 @@ test('rehypeHighlight', async function (t) {
   )
 
   await t.test('should not highlight (`nohighlight`)', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -309,9 +324,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should warn on missing languages', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -329,9 +345,10 @@ test('rehypeHighlight', async function (t) {
   await t.test(
     'should not highlight plainText-ed languages',
     async function () {
-      const file = await rehype()
-        .data('settings', {fragment: true})
+      const file = await unified()
+        .use(rehypeParse, {fragment: true})
         .use(rehypeHighlight, {plainText: ['js']})
+        .use(rehypeStringify)
         .process(
           [
             '<h1>Hello World!</h1>',
@@ -355,9 +372,10 @@ test('rehypeHighlight', async function (t) {
 
   await t.test('should not remove contents', async function () {
     // For some reason this isn’t detected as c++.
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true, subset: ['cpp']})
+      .use(rehypeStringify)
       .process(`<pre><code>def add(a, b):\n  return a + b</code></pre>`)
 
     assert.equal(
@@ -367,9 +385,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should support multiple `code`s in a `pre`', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
-      .use(rehypeHighlight).process(`<pre>
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeHighlight)
+      .use(rehypeStringify).process(`<pre>
   <code class="language-javascript">const a = 1;</code>
   <code class="language-python">printf("x")</code>
 </pre>`)
@@ -381,9 +400,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should reprocess exact', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -405,11 +425,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should parse custom language', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
-      .use(rehypeHighlight, {
-        aliases: {javascript: ['funkyscript']}
-      })
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
+      .use(rehypeHighlight, {aliases: {javascript: ['funkyscript']}})
+      .use(rehypeStringify)
       .process(
         '<pre><code class="lang-funkyscript">console.log(1)</code></pre>'
       )
@@ -421,9 +440,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should reprocess exact', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -445,9 +465,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should ignore comments', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {detect: true})
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -467,9 +488,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should support `<br>` elements', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
@@ -490,9 +512,10 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should register languages', async function () {
-    const file = await rehype()
-      .data('settings', {fragment: true})
+    const file = await unified()
+      .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight, {languages: {...common, test: testLang}})
+      .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
