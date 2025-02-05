@@ -399,31 +399,6 @@ test('rehypeHighlight', async function (t) {
     )
   })
 
-  await t.test('should reprocess exact', async function () {
-    const file = await unified()
-      .use(rehypeParse, {fragment: true})
-      .use(rehypeHighlight)
-      .use(rehypeStringify)
-      .process(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-          '<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-        ].join('\n')
-      )
-
-    assert.equal(
-      String(file),
-      [
-        '<h1>Hello World!</h1>',
-        '',
-        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-      ].join('\n')
-    )
-  })
-
   await t.test('should parse custom language', async function () {
     const file = await unified()
       .use(rehypeParse, {fragment: true})
@@ -440,28 +415,20 @@ test('rehypeHighlight', async function (t) {
   })
 
   await t.test('should reprocess exact', async function () {
+    const expected = [
+      '<h1>Hello World!</h1>',
+      '',
+      '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
+      '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
+    ].join('\n')
+
     const file = await unified()
       .use(rehypeParse, {fragment: true})
       .use(rehypeHighlight)
       .use(rehypeStringify)
-      .process(
-        [
-          '<h1>Hello World!</h1>',
-          '',
-          '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-          '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-        ].join('\n')
-      )
+      .process(expected)
 
-    assert.equal(
-      String(file),
-      [
-        '<h1>Hello World!</h1>',
-        '',
-        '<pre><code class="hljs lang-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">"World"</span>;',
-        '<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hello, "</span> + name + <span class="hljs-string">"!"</span>)</code></pre>'
-      ].join('\n')
-    )
+    assert.equal(String(file), expected)
   })
 
   await t.test('should ignore comments', async function () {
