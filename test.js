@@ -1,10 +1,5 @@
-/**
- * @import {LanguageFn} from 'lowlight'
- */
-
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {common} from 'lowlight'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeParse from 'rehype-parse'
 import rehypeStringify from 'rehype-stringify'
@@ -481,13 +476,23 @@ test('rehypeHighlight', async function (t) {
   await t.test('should register languages', async function () {
     const file = await unified()
       .use(rehypeParse, {fragment: true})
-      .use(rehypeHighlight, {languages: {...common, test: testLang}})
+      .use(rehypeHighlight, {
+        languages: {
+          test() {
+            return {
+              aliases: [],
+              contains: [],
+              keywords: {keyword: 'bravo'}
+            }
+          }
+        }
+      })
       .use(rehypeStringify)
       .process(
         [
           '<h1>Hello World!</h1>',
           '',
-          '<pre><code class="language-scss">test normal text</code></pre>'
+          '<pre><code class="language-test">alpha bravo charlie</code></pre>'
         ].join('\n')
       )
 
@@ -496,19 +501,8 @@ test('rehypeHighlight', async function (t) {
       [
         '<h1>Hello World!</h1>',
         '',
-        '<pre><code class="hljs language-scss">test <span class="hljs-attribute">normal</span> <span class="hljs-selector-tag">text</span></code></pre>'
+        '<pre><code class="hljs language-test">alpha <span class="hljs-keyword">bravo</span> charlie</code></pre>'
       ].join('\n')
     )
-
-    /**
-     * @type {LanguageFn}
-     */
-    function testLang() {
-      return {
-        aliases: ['test'],
-        contains: [],
-        keywords: {keyword: 'test'}
-      }
-    }
   })
 })
