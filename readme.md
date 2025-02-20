@@ -362,10 +362,16 @@ console.log(String(file))
 You can add support for line numbers and line highlighting with a separate
 plugin, [`rehype-highlight-code-lines`][rehype-highlight-code-lines].
 
+`rehype-highlight-code-lines` runs on `<code>` elements with directives
+like `showLineNumbers` and range number in curly braces like `{2-4, 8}`.
+That directives can be passed as a word in markdown
+(` ```ts showLineNumbers {2-4,8} `) or as a class and attribute in HTML
+(`<code class="language-ts show-line-numbers" data-highlight-lines="2-4,8">`).
+
 For example, with `example.html`:
 
 ```html
-<pre><code class="language-js">console.log("Hi!")</code></pre>
+<pre><code class="language-js show-line-numbers">console.log("Hi!")</code></pre>
 ```
 
 …and `example.js`:
@@ -379,10 +385,7 @@ import {read} from 'to-vfile'
 const file = await rehype()
   .data('settings', {fragment: true})
   .use(rehypeHighlight)
-  .use(rehypeHighlightCodeLines, {
-    showLineNumbers: true,
-    lineContainerTagName: 'div'
-  })
+  .use(rehypeHighlightCodeLines)
   .process(await read('example.html'))
 
 console.log(String(file))
@@ -391,7 +394,7 @@ console.log(String(file))
 …then running that yields:
 
 ```html
-<pre><code class="hljs language-js"><div class="code-line numbered-code-line" data-line-number="1"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hi!"</span>)</div></code></pre>
+<pre><code class="hljs language-js"><span class="code-line numbered-code-line" data-line-number="1"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">"Hi!"</span>)</span></code></pre>
 ```
 
 ## Types
